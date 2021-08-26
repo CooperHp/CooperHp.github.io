@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="概览 ovito module可以实现绝大部分的功能，例如：  导入导出数据到模拟文件 使用modifiers创建数据处理流 渲染三维图像或视频 获取分析流计算的结果数据 自定义数据modifiers函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3. OVITO module使用">
+<meta property="og:url" content="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hu说扒道">
+<meta property="og:description" content="概览 ovito module可以实现绝大部分的功能，例如：  导入导出数据到模拟文件 使用modifiers创建数据处理流 渲染三维图像或视频 获取分析流计算的结果数据 自定义数据modifiers函数">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.ovito.org/docs/current/python/_images/Pipeline_overview.svg">
+<meta property="og:image" content="https://www.ovito.org/docs/current/python/_images/data_objects.svg">
+<meta property="article:published_time" content="2021-06-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-08T00:00:00.000Z">
+<meta property="article:author" content="Cooper">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Python库">
+<meta property="article:tag" content="画图">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.ovito.org/docs/current/python/_images/Pipeline_overview.svg">
+
+
+<link rel="canonical" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3&#x2F;OVITO%E8%BD%AF%E4%BB%B6&#x2F;OVITO%20module%E4%BD%BF%E7%94%A8&#x2F;&quot;,&quot;path&quot;:&quot;科研相关&#x2F;OVITO软件&#x2F;OVITO module使用&#x2F;&quot;,&quot;title&quot;:&quot;3. OVITO module使用&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>3. OVITO module使用 | Hu说扒道</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hu说扒道</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">做自己喜欢的事。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81data-pipeline%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">数据流（data pipeline）结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">基本命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#io"><span class="nav-number">3.1.</span> <span class="nav-text">I&#x2F;O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">数据模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0modifers"><span class="nav-number">3.3.</span> <span class="nav-text">添加modifers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C"><span class="nav-number">3.4.</span> <span class="nav-text">获取计算结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E5%9B%BE%E5%83%8F%E5%92%8C%E8%A7%86%E9%A2%91"><span class="nav-number">3.5.</span> <span class="nav-text">渲染图像和视频</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E5%85%83%E7%B4%A0"><span class="nav-number">3.5.1.</span> <span class="nav-text">可视化元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#viewports"><span class="nav-number">3.5.2.</span> <span class="nav-text">Viewports</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93"><span class="nav-number">3.5.3.</span> <span class="nav-text">渲染</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cooper"
+      src="/images/naruto.jpg">
+  <p class="site-author-name" itemprop="name">Cooper</p>
+  <div class="site-description" itemprop="description">分享一些个人的学习笔记、资料和想法。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/images/wechat.jpg" title="微信 → &#x2F;images&#x2F;wechat.jpg"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/zai-xia-shu-liao-73" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;zai-xia-shu-liao-73" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3. OVITO module使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-08 08:00:00" itemprop="dateCreated datePublished" datetime="2021-06-08T08:00:00+08:00">2021-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">OVITO软件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="概览">概览</h2>
+<p><code>ovito module</code>可以实现绝大部分的功能，例如：</p>
+<ul>
+<li>导入导出数据到模拟文件</li>
+<li>使用modifiers创建数据处理流</li>
+<li>渲染三维图像或视频</li>
+<li>获取分析流计算的结果数据</li>
+<li>自定义数据modifiers函数</li>
+</ul>
+<span id="more"></span>
+<h2 id="数据流data-pipeline结构">数据流（data pipeline）结构</h2>
+<p>在图形界面中，数据流就是通过对导入的文件数据添加一个或多个modifiers，动态计算这些modifiers的结果并展示在交互式的窗口中。</p>
+<p><code>ovito module</code>以相同的方式创建一系列modifiers并配置参数。数据流表示为一个<code>Pipeline</code>类的实例，以列表形式管理着所添加的各个modifiers。通常数据流存在几种类型的数据源<code>data source</code>，这些都是单独的对象，用于提供、生成数据到pipeline的第一个modifier。通常情况下<code>data source</code>是<code>FileSource</code>类的实例，用于从外部文件读取数据。</p>
+<figure>
+<img src="https://www.ovito.org/docs/current/python/_images/Pipeline_overview.svg" alt="../_images/Pipeline_overview.svg"><figcaption aria-hidden="true">../_images/Pipeline_overview.svg</figcaption>
+</figure>
+<p>如果想要可视化<code>Pipeline</code>的结果，需要将pipeline替换为<code>scene</code>，例如三维空间渲染的图像。只有通过调用<code>add_to_scene()</code>方法到pipeline中才会在交互式窗口中显示渲染图像。</p>
+<h2 id="基本命令">基本命令</h2>
+<h3 id="io">I/O</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取文件，自动创建`Pipeline`实例</span></span><br><span class="line"><span class="comment"># pipeline为Pipeline实例</span></span><br><span class="line"><span class="comment"># pipeline.source为FileSource实例，可通过替换该属性变化输入文件，通常用于批处理多个模拟文件时</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> ovito.io <span class="keyword">import</span> import_file</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline = import_file(<span class="string">&quot;init.vasp&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可使用通配符来定义文件名</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline = import_file(<span class="string">&quot;*.vasp&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可使用文件名列表一次读取</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline = import_file([<span class="string">&quot;1.vasp&quot;</span>, <span class="string">&quot;2.vasp&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看加载的模拟轨迹数目</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(pipeline.source.num_frames)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对逐帧执行循环操作</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> frame <span class="keyword">in</span> <span class="built_in">range</span>(pipeline.source.num_frames):</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>    data = pipeline.compute(frame)</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将pipeline结果直接输出到文件，存储对象为pipeline</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> ovito.io <span class="keyword">import</span> export_file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二个参数为输出文件名，第三个参数为文件格式。根据选择的格式有不同的关键字参数</span></span><br><span class="line"><span class="comment"># 当multiple_frames=True时，导出各帧数据到文件</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>export_file(pipeline, <span class="string">&quot;outputdata.dump&quot;</span>, <span class="string">&quot;lammps/dump&quot;</span>, multiple_frames = <span class="literal">True</span>, columns = [<span class="string">&quot;Position.X&quot;</span>, <span class="string">&quot;Position.Y&quot;</span>, <span class="string">&quot;Position.Z&quot;</span>, <span class="string">&quot;Structure Type&quot;</span>])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出到文件的可选格式见<a target="_blank" rel="noopener" href="https://www.ovito.org/docs/current/python/modules/ovito_io.html#ovito.io.export_file">链接</a></p>
+</blockquote>
+<h3 id="数据模型">数据模型</h3>
+<p>当执行<code>Pipeline.compute()</code>方法时，返回一个存储计算结果的<code>DataCollection</code>对象。</p>
+<p><img src="https://www.ovito.org/docs/current/python/_images/data_objects.svg" alt="../_images/data_objects.svg" style="zoom:80%;"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出particles的属性名</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">list</span>(data.particles.keys()))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>color_property = data.particles[<span class="string">&#x27;Color&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一些全部属性也可以通过以下方式返回</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>color_property = data.particles.color</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>NOTE：一个<code>DataCollection</code>对象只对应一帧，而不是整条轨迹</p>
+</blockquote>
+<h3 id="添加modifers">添加modifers</h3>
+<p><code>import_file()</code>函数创建的<code>Pipeline</code>不包含任何modifiers，仅表示从硬盘中读取了数据，可通过以下方式插入modifiers，modifiers可理解为图形界面的一个个操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> ovito.modifiers <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline.modifiers.append(ColorCodingModifier(<span class="built_in">property</span> = <span class="string">&#x27;Potential Energy&#x27;</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline.modifiers.append(SliceModifier(normal = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+<p>modifier参数可通过以下两种方式初始化：</p>
+<ul>
+<li><p>（常用）创建modifier时通过传递参数的方式初始化（如上例）</p></li>
+<li><p>创建modifier后修改其属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>modifier = CommonNeighborAnalysisModifier()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>modifier.cutoff = <span class="number">3.2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>modifier.only_selected = <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline.modifiers.append(modifier)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>可以随时从pipeline中修改modifier参数，甚至添加或删除特定modifier。此外，可以设置多个pipeline，这些pipeline共享data source或部分modifier。pipeline中的modifiers将依次执行，当修改modifier参数或插入新的modifier时，需要使用<code>compute()</code>方法重新计算。</p>
+<h3 id="获取计算结果">获取计算结果</h3>
+<p>除了直接将pipeline计算结果输出到文件，可以通过<code>compute()</code>方法返回<code>DataCollection</code>对象，调用该方法后执行：1. 从pipeline data source中请求数据；2. 将pipeline中所有modifiers依次作用到data上。<code>DataCollection</code>对象是一个包含一系列<code>data</code>对象的集合，不同对象包含不同的数据信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>data = pipeline.compute()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.objects</span><br><span class="line">[SimulationCell(), Particles(), AttributeDataObject(), AttributeDataObject()]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取初始数据</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>input_data  = pipeline.source.compute()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以将帧序号传给compute()执行计算</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipeline = import_file(<span class="string">&quot;trajectory_*.dump&quot;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data_frame0 = pipeline.compute(<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data_frame1 = pipeline.compute(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="渲染图像和视频">渲染图像和视频</h3>
+<h4 id="可视化元素">可视化元素</h4>
+<p>数据对象与可视化对象是分离的，如模拟胞的数据信息存储在<code>SimulationCell</code>对象，而其在窗口显示的图像和渲染图像通过<code>SimulationCellVis</code>对象定义，该对象通常包含一系列参数来控制可视化。</p>
+<p>可视化对象与<code>DataObject</code>对象连接，可通过<code>vis</code>对象访问。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可视化对象</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.cell.vis</span><br><span class="line">&lt;SimulationCellVis at <span class="number">0x7fc3650a1c20</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定模拟胞盒子为红色</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.cell.vis.rendering_color = (<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过DataVis基类控制是否显示该对象，如不显示晶胞格子</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.cell.vis.enabled = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 粒子的显示通过ParticlesVis对象控制，连接着Particles数据对象，如将粒子形状表示为立方体</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.particles.vis.shape = ParticlesVis.Shape.Square</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一些modifiers将计算得到新的属性，可通过以下两种方式访问可视化实例</span></span><br><span class="line"><span class="comment"># 方法一，对modifier的可视化对象操作</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>modifier.vis.enabled = <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>modifier.vis.color = (<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 方法二：对data的可视化对象操作</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.particles.displacements.vis.enabled = <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.particles.displacements.vis.color = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="viewports">Viewports</h4>
+<p>通过调用<code>add_to_scene()</code>方法进行可视化。此外，可定义<code>Viewport</code>对象来定义，该对象控制着虚拟照相机的位置和方向，投影等。可通过<code>Viewport,render_image()</code>方法将渲染的图像输出到文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> ovito.vis <span class="keyword">import</span> Viewport</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp = Viewport()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp.<span class="built_in">type</span> = Viewport.<span class="type">Type</span>.Perspective</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp.camera_pos = (-<span class="number">100</span>, -<span class="number">150</span>, <span class="number">150</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp.camera_dir = (<span class="number">2</span>, <span class="number">3</span>, -<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp.fov = math.radians(<span class="number">60.0</span>)</span><br><span class="line"><span class="comment"># 将渲染图像输出到文件</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vp.render_image(filename=<span class="string">&quot;myimage.png&quot;</span>, size=(<span class="number">800</span>,<span class="number">600</span>))</span><br></pre></td></tr></table></figure>
+<p>一些标准的viewport类型，如<code>TOP</code>、<code>FRONT</code>等。<code>PERSPECTIVE</code>、<code>ORTHO</code>类型允许自由调节空间中的照相机，前者使用中心投影法，后者平行投影法。可以使用<code>Viewport.zoom_all()</code>方法让ovito自动选择合适的相机缩放和位置。</p>
+<h4 id="渲染">渲染</h4>
+<p>图像和视频的渲染使用<code>Viewport.render_image()</code>和<code>Viewport.render_anim()</code>方法，支持不同的渲染引擎，默认引擎为<code>OpenGLRender</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># size为分辨率大小</span></span><br><span class="line">vp.render_image(size=(<span class="number">800</span>,<span class="number">600</span>), filename=<span class="string">&quot;figure.png&quot;</span>, background=(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>), frame=<span class="number">8</span>)</span><br><span class="line">vp.render_anim(size=(<span class="number">800</span>,<span class="number">600</span>), filename=<span class="string">&quot;animation.avi&quot;</span>, fps=<span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用其他渲染器</span></span><br><span class="line"><span class="keyword">from</span> ovito.vis <span class="keyword">import</span> Viewport, OSPRayRenderer</span><br><span class="line">vp.render_image(size=(<span class="number">800</span>,<span class="number">600</span>), filename=<span class="string">&#x27;figure.png&#x27;</span>, renderer=OSPRayRenderer())</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Python%E5%BA%93/" rel="tag"># Python库</a>
+              <a href="/tags/%E7%94%BB%E5%9B%BE/" rel="tag"># 画图</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E5%AE%89%E8%A3%85/" rel="prev" title="2. OVITO module安装">
+                  <i class="fa fa-chevron-left"></i> 2. OVITO module安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BB%8B%E7%BB%8D/" rel="next" title="1. OVITO module介绍">
+                  1. OVITO module介绍 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
