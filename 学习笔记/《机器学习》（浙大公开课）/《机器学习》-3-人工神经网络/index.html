@@ -21,7 +21,7 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
 <meta name="description" content="机器学习（浙大） 《机器学习（周志华）》  神经元的数学模型 人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。 数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑">
 <meta property="og:type" content="article">
-<meta property="og:title" content="3. 人工神经网络——学习《机器学习（浙大公开课）》">
+<meta property="og:title" content="3. 人工神经网络">
 <meta property="og:url" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
 <meta property="og:site_name" content="Hu说扒道">
 <meta property="og:description" content="机器学习（浙大） 《机器学习（周志华）》  神经元的数学模型 人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。 数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑">
@@ -42,10 +42,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C&#x2F;&quot;,&quot;path&quot;:&quot;学习笔记&#x2F;《机器学习》（浙大公开课）&#x2F;《机器学习》-3-人工神经网络&#x2F;&quot;,&quot;title&quot;:&quot;3. 人工神经网络——学习《机器学习（浙大公开课）》&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C&#x2F;&quot;,&quot;path&quot;:&quot;学习笔记&#x2F;《机器学习》（浙大公开课）&#x2F;《机器学习》-3-人工神经网络&#x2F;&quot;,&quot;title&quot;:&quot;3. 人工神经网络&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>3. 人工神经网络——学习《机器学习（浙大公开课）》 | Hu说扒道</title><script src="/js/config.js"></script>
+<title>3. 人工神经网络 | Hu说扒道</title><script src="/js/config.js"></script>
   
 
 
@@ -213,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          3. 人工神经网络——学习《机器学习（浙大公开课）》
+          3. 人工神经网络
         </h1>
 
         <div class="post-meta-container">
@@ -456,13 +456,13 @@ E(y)=-\sum _{i=1}^KY_i\log(y_i)
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="prev" title="2. 支持向量机——学习《机器学习（浙大公开课）》">
-                  <i class="fa fa-chevron-left"></i> 2. 支持向量机——学习《机器学习（浙大公开课）》
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="prev" title="2. 支持向量机">
+                  <i class="fa fa-chevron-left"></i> 2. 支持向量机
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="4. 深度学习——《机器学习（浙大公开课）》">
-                  4. 深度学习——《机器学习（浙大公开课）》 <i class="fa fa-chevron-right"></i>
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="4. 深度学习">
+                  4. 深度学习 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
