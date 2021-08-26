@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="KMCLib模拟过程 下面以latticeModel.cpp程序说明KMCLib软件模拟的一般过程。latticemodel.cpp程序定义LatticeModel类，用于创建和执行KMC模型，包含三个方法。 LatticeModel::calculateInitialMatching() 在模拟正式开始前执行，主要用于对每个格点匹配所有定义的过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6. KMCLib模拟过程介绍 [KMCLib]">
+<meta property="og:url" content="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Hu说扒道">
+<meta property="og:description" content="KMCLib模拟过程 下面以latticeModel.cpp程序说明KMCLib软件模拟的一般过程。latticemodel.cpp程序定义LatticeModel类，用于创建和执行KMC模型，包含三个方法。 LatticeModel::calculateInitialMatching() 在模拟正式开始前执行，主要用于对每个格点匹配所有定义的过程。">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图1.png">
+<meta property="og:image" content="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图2.png">
+<meta property="og:image" content="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图3.jpg">
+<meta property="article:published_time" content="2021-08-25T08:07:12.000Z">
+<meta property="article:modified_time" content="2021-08-25T08:07:12.000Z">
+<meta property="article:author" content="Cooper">
+<meta property="article:tag" content="Monte Carlo">
+<meta property="article:tag" content="Python库">
+<meta property="article:tag" content="科研软件">
+<meta property="article:tag" content="KMCLib">
+<meta property="article:tag" content="KMC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图1.png">
+
+
+<link rel="canonical" href="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E7%A7%91%E7%A0%94&#x2F;%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D&#x2F;&quot;,&quot;path&quot;:&quot;科研&#x2F;学习笔记&#x2F;6-KMCLib模拟过程介绍&#x2F;&quot;,&quot;title&quot;:&quot;6. KMCLib模拟过程介绍 [KMCLib]&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>6. KMCLib模拟过程介绍 [KMCLib] | Hu说扒道</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hu说扒道</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">做自己喜欢的事。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kmclib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">KMCLib模拟过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#latticemodelcalculateinitialmatching"><span class="nav-number">1.1.</span> <span class="nav-text">LatticeModel::calculateInitialMatching()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latticemodelsinglestep"><span class="nav-number">1.2.</span> <span class="nav-text">LatticeModel::singleStep()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latticemodelpropagatetime"><span class="nav-number">1.3.</span> <span class="nav-text">LatticeModel::propagateTime()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E8%87%B4%E8%BF%87%E7%A8%8B%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.4.</span> <span class="nav-text">大致过程描述</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kmclib%E6%A8%A1%E6%8B%9F%E7%BB%86%E8%8A%82"><span class="nav-number">2.</span> <span class="nav-text">KMCLib模拟细节</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kmclib%E6%A8%A1%E6%8B%9F%E6%AF%8F%E4%B8%AA%E6%AD%A5%E9%AA%A4%E5%AF%B9%E5%BA%94%E7%9A%84%E6%A8%A1%E5%9D%97%E5%92%8C%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">KMCLib模拟每个步骤对应的模块和类</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cooper"
+      src="/images/naruto.jpg">
+  <p class="site-author-name" itemprop="name">Cooper</p>
+  <div class="site-description" itemprop="description">分享一些个人的学习笔记、资料和想法。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/images/wechat.jpg" title="微信 → &#x2F;images&#x2F;wechat.jpg"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/zai-xia-shu-liao-73" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;zai-xia-shu-liao-73" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6. KMCLib模拟过程介绍 [KMCLib]
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-25 16:07:12" itemprop="dateCreated datePublished" datetime="2021-08-25T16:07:12+08:00">2021-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94/" itemprop="url" rel="index"><span itemprop="name">科研</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="kmclib模拟过程">KMCLib模拟过程</h1>
+<p>下面以<code>latticeModel.cpp</code>程序说明KMCLib软件模拟的一般过程。<code>latticemodel.cpp</code>程序定义<code>LatticeModel</code>类，用于创建和执行KMC模型，包含三个方法。</p>
+<h2 id="latticemodelcalculateinitialmatching"><code>LatticeModel::calculateInitialMatching()</code></h2>
+<p>在模拟正式开始前执行，主要用于对每个格点匹配所有定义的过程。 <span id="more"></span></p>
+<h2 id="latticemodelsinglestep"><code>LatticeModel::singleStep()</code></h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LatticeModel::singleStep</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 选择一个过程</span></span><br><span class="line">    <span class="comment">// Select a process. </span></span><br><span class="line">    Process &amp; process = (*interactions_.<span class="built_in">pickProcess</span>());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 选择该过程中的一个格点</span></span><br><span class="line">    <span class="comment">// Select a site.</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> site_index = process.<span class="built_in">pickSite</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 执行该转移过程</span></span><br><span class="line">    <span class="comment">// Perform the operation.</span></span><br><span class="line">    configuration_.<span class="built_in">performBucketProcess</span>(process, site_index, lattice_map_);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 4. 更新latticemap和matcher</span></span><br><span class="line">    <span class="comment">// Run the re-matching of the affected sites and their neighbours.</span></span><br><span class="line">    <span class="keyword">const</span> std::vector&lt;<span class="keyword">int</span>&gt; &amp; indices = \</span><br><span class="line">        lattice_map_.<span class="built_in">supersetNeighbourIndices</span>(process.<span class="built_in">affectedIndices</span>(), interactions_.<span class="built_in">maxRange</span>()</span><br><span class="line"></span><br><span class="line">    matcher_.<span class="built_in">calculateMatching</span>(interactions_,</span><br><span class="line">                               configuration_,</span><br><span class="line">                               lattice_map_,</span><br><span class="line">                               indices);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 更新可能过程列表</span></span><br><span class="line">    <span class="comment">// Update the interactions&#x27; probability table.</span></span><br><span class="line">    interactions_.<span class="built_in">updateProbabilityTable</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="latticemodelpropagatetime"><code>LatticeModel::propagateTime()</code></h2>
+<p>根据总的速率更新每一步的模拟时间。</p>
+<h2 id="大致过程描述">大致过程描述</h2>
+<ol start="0" type="1">
+<li><p>模拟开始前执行格点与过程的匹配初始化，创建可能过程列表</p></li>
+<li><p>从当前结构状态中所有可发生的过程中选择一个过程</p>
+<ul>
+<li><p>总过程速率是所有可能的过程速率和，那么<strong>每个过程速率和=该过程速率×可能发生该过程的格点数目</strong></p></li>
+<li><p>这里的可发生过程针对的是可能过程列表</p></li>
+</ul></li>
+<li><p>选择能够发生该过程的一个格点</p>
+<ul>
+<li>该过程至少对应一个格点，与选择过程类似，应用轮盘赌的方法选择格点</li>
+</ul></li>
+<li><p>在选定的格点上执行选择的过程</p></li>
+<li><p>更新格点近邻环境和格点与过程匹配</p></li>
+<li><p>更新可能过程列表</p></li>
+</ol>
+<h1 id="kmclib模拟细节">KMCLib模拟细节</h1>
+<p>修改KMCLib软件代码，实现输出KMC模拟每一步的细节。测试模型为含单空位的镍晶格，转移过程定义为Va与周围12个Ni原子发生转交换，如下图：</p>
+<p><img src="/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图1.png"></p>
+<p>关于代码修改的细节说明：</p>
+<p><img src="/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图2.png" width="500"></p>
+<h1 id="kmclib模拟每个步骤对应的模块和类">KMCLib模拟每个步骤对应的模块和类</h1>
+<p><img src="/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/图3.jpg"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Monte-Carlo/" rel="tag"># Monte Carlo</a>
+              <a href="/tags/Python%E5%BA%93/" rel="tag"># Python库</a>
+              <a href="/tags/%E7%A7%91%E7%A0%94%E8%BD%AF%E4%BB%B6/" rel="tag"># 科研软件</a>
+              <a href="/tags/KMCLib/" rel="tag"># KMCLib</a>
+              <a href="/tags/KMC/" rel="tag"># KMC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E7%A7%91%E7%A0%94/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/5-KMCLib%E5%AE%89%E8%A3%85%E4%B8%8E%E8%B0%83%E8%AF%95/" rel="prev" title="5. KMCLib安装与调试 [KMCLib]">
+                  <i class="fa fa-chevron-left"></i> 5. KMCLib安装与调试 [KMCLib]
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
