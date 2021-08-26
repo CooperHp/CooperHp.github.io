@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="机器学习（浙大） 支持向量机 SVM（ 知乎） 《机器学习（周志华）》  线性可分定义 1995年俄罗斯科学家Vladimir Naumovich Vapnik发明支持向量机，主要针对二分类问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2. 支持向量机——学习《机器学习（浙大公开课）》">
+<meta property="og:url" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/index.html">
+<meta property="og:site_name" content="Hu说扒道">
+<meta property="og:description" content="机器学习（浙大） 支持向量机 SVM（ 知乎） 《机器学习（周志华）》  线性可分定义 1995年俄罗斯科学家Vladimir Naumovich Vapnik发明支持向量机，主要针对二分类问题。">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/image-1.jpg">
+<meta property="article:published_time" content="2021-08-11T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-11T00:00:01.000Z">
+<meta property="article:author" content="Cooper">
+<meta property="article:tag" content="数学物理">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/image-1.jpg">
+
+
+<link rel="canonical" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA&#x2F;&quot;,&quot;path&quot;:&quot;学习笔记&#x2F;《机器学习》（浙大公开课）&#x2F;《机器学习》-2-支持向量机&#x2F;&quot;,&quot;title&quot;:&quot;2. 支持向量机——学习《机器学习（浙大公开课）》&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>2. 支持向量机——学习《机器学习（浙大公开课）》 | Hu说扒道</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hu说扒道</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">做自己喜欢的事。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">线性可分定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">优化问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%8D%E5%8F%AF%E5%88%86%E6%83%85%E5%86%B5"><span class="nav-number">4.</span> <span class="nav-text">线性不可分情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%8E%E7%BB%B4%E5%88%B0%E9%AB%98%E7%BB%B4%E7%9A%84%E6%98%A0%E5%B0%84"><span class="nav-number">5.</span> <span class="nav-text">低维到高维的映射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">6.</span> <span class="nav-text">核函数的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%E4%B8%80"><span class="nav-number">6.1.</span> <span class="nav-text">例子一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%E4%BA%8C"><span class="nav-number">6.2.</span> <span class="nav-text">例子二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mercer%E5%AE%9A%E7%90%86"><span class="nav-number">6.3.</span> <span class="nav-text">Mercer定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="nav-number">6.4.</span> <span class="nav-text">常用核函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">原问题和对偶问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98"><span class="nav-number">7.1.</span> <span class="nav-text">原问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">7.2.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%AF%B9%E5%81%B6%E5%AE%9A%E7%90%86"><span class="nav-number">7.3.</span> <span class="nav-text">强对偶定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kkt%E6%9D%A1%E4%BB%B6"><span class="nav-number">7.4.</span> <span class="nav-text">KKT条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">转化为对偶问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="nav-number">9.</span> <span class="nav-text">算法总体流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E8%AE%AD%E7%BB%83%E5%92%8C%E6%B5%8B%E8%AF%95%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">9.1.</span> <span class="nav-text">支持向量机训练和测试的流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E5%BA%A6%E9%87%8F"><span class="nav-number">10.</span> <span class="nav-text">识别系统的性能度量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5confusion-matrix"><span class="nav-number">10.1.</span> <span class="nav-text">混淆矩阵（confusion matrix）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#roc%E6%9B%B2%E7%BA%BF"><span class="nav-number">10.2.</span> <span class="nav-text">ROC曲线</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="nav-number">11.</span> <span class="nav-text">多类问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cooper"
+      src="/images/naruto.jpg">
+  <p class="site-author-name" itemprop="name">Cooper</p>
+  <div class="site-description" itemprop="description">分享一些个人的学习笔记、资料和想法。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/images/wechat.jpg" title="微信 → &#x2F;images&#x2F;wechat.jpg"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/zai-xia-shu-liao-73" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;zai-xia-shu-liao-73" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2. 支持向量机——学习《机器学习（浙大公开课）》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-08-11 08:00:00 / 修改时间：08:00:01" itemprop="dateCreated datePublished" datetime="2021-08-11T08:00:00+08:00">2021-08-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB?p=15&amp;spm_id_from=pageDriver">机器学习（浙大）</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77750026">支持向量机 SVM（ 知乎）</a></p>
+<p>《机器学习（周志华）》</p>
+</blockquote>
+<h1 id="线性可分定义">线性可分定义</h1>
+<p>1995年俄罗斯科学家Vladimir Naumovich Vapnik发明支持向量机，主要针对二分类问题。 <img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/image-1.jpg" width="600"> <span id="more"></span></p>
+<p>线性可分的严格定义：一个训练样本集<span class="math inline">\({\{(X_i,y_i),...,(X_N, y_N)\}}\)</span>，在<span class="math inline">\(i=1 - N\)</span>线性可分，是指存在<span class="math inline">\((\omega_1, \omega_2, b)\)</span>使得对<span class="math inline">\(i=1\sim N\)</span>，有：</p>
+<ol type="1">
+<li><p>若 <span class="math inline">\(y_i = +1\)</span>，则<span class="math inline">\(\omega_1x_{i1}+\omega_2x_{i2}+b&gt;0\)</span></p></li>
+<li><p>若 <span class="math inline">\(y_i = -1\)</span>，则<span class="math inline">\(\omega_1x_{i1}+\omega_2x_{i2}+b&lt;0\)</span></p></li>
+</ol>
+<p>用向量形式来定义线性可分，有：</p>
+<p>假设：<span class="math inline">\(Xi=[x_{i1} x_{i2}]\)</span>，<span class="math inline">\(\omega=[\omega_1 \omega_2]\)</span>，</p>
+<ol type="1">
+<li><p>妥 <span class="math inline">\(y_i = +1\)</span>，则<span class="math inline">\(\omega^TX_i+b&gt;0\)</span></p></li>
+<li><p>妥 <span class="math inline">\(y_i = -1\)</span>，则<span class="math inline">\(\omega^TX_i+b&lt;0\)</span></p></li>
+</ol>
+<p>上两式可进一步写为：<span class="math inline">\(y_i(\omega^TX_i+b)&gt;0\)</span></p>
+<h1 id="问题描述">问题描述</h1>
+<p>支持向量机算法的两个步骤：</p>
+<ol type="1">
+<li>解决线性可分问题</li>
+<li>再将线性可分问题中获得的结论推广至线性不可分情况</li>
+</ol>
+<p>如果一个数据集是线性可分的，那么就存在无穷多个超平面将各个平面分开。在这些超平面中寻找到最好的是一个<strong>优化问题</strong>。</p>
+<p>支持向量机寻找的最优分类直线（二维特征空间）应满足：</p>
+<ul>
+<li>该直线分开了两类</li>
+<li>该直线有最大化间隔（margin）</li>
+<li>该直线处于间隔的中间，到所有支持向量距离相等</li>
+</ul>
+<blockquote>
+<p>Tips：距离超平面最近的几个训练样本点使<span class="math inline">\(\omega^TX_i+b=\pm 1\)</span>成立，这些点成为支持向量。两个异类支持向量到超平面的距离称为间隔。训练完成后，大部分的训练样本都不需要保留，最终模型仅与支持向量有关。</p>
+</blockquote>
+<h1 id="优化问题">优化问题</h1>
+<p>当特征空间是高维时，最优分类直线将变成超平面，支持向量机需要寻找的是最大化间隔（margin）的超平面，该优化问题可写为（支持向量机的基本型）：</p>
+<p>最小化（minimize）：<span class="math inline">\(\frac{1}{2}||\omega||^2\)</span>。</p>
+<p>限制条件：<span class="math inline">\(y_i(\omega^TX_i+b)\ge1, (i=1\sim N)\)</span>。</p>
+<p>Tips：支持向量到超平面的距离与<span class="math inline">\(||\omega||\)</span>成反比，写成<span class="math inline">\(1/2||\omega||^2\)</span>是为了求导方便。<span class="math inline">\(y_i\)</span>用于协调超平面的左右。其中，<span class="math inline">\((X_i, y_i), i=1-N\)</span>是已知的，而<span class="math inline">\((\omega, b)\)</span>是待求的。</p>
+<p>该优化问题是<strong>凸优化</strong>（convex optimization）中的二次规划问题，其定义为：</p>
+<p>（1）目标函数（objective function）是二次项</p>
+<p>（2）限制条件是一次项</p>
+<p>这种凸优化问题要么无解，要么只有唯一的最小值解。实际中，凸优化问题只有唯一一个全局极值，可应用梯度下降法直接求解。</p>
+<blockquote>
+<p>Tips：线性可分情况下支持向量机寻找超平面的优化问题是一个凸优化问题，二凸优化问题有唯一解，因此线性可分情况下可直接求解。</p>
+</blockquote>
+<h1 id="线性不可分情况">线性不可分情况</h1>
+<p>线性不可分情况下，支持向量机寻找超平面的优化问题无解，需要放松限制条件。放松限制条件的基本思路为，对每个训练样本及标签<span class="math inline">\((X_i,y_i)\)</span>设置松弛变量（slack variable）<span class="math inline">\(\delta_i\)</span>。选择替代损失函数为hinge函数<span class="math inline">\(\ell_{hinge}(z)=\max (0, 1-z)\)</span>，则<span class="math inline">\(\delta_i=\max (0, 1-y_i(\omega^Tx_i+b))\)</span>）。优化问题的限制条件可改写为：<span class="math inline">\(y_i(\omega^TX_i+b)\ge1-\delta_i, (i=1-N)\)</span>。改造后的支持向量机（软间隔支持向量机）：</p>
+<p>最小化：<span class="math inline">\(\frac{1}{2}||\omega||^2+C\Sigma^N_{i=1}\delta_i\)</span>或<span class="math inline">\(\frac{1}{2}||\omega||^2+C\Sigma^N_{i=1}\delta_i^2\)</span></p>
+<p>限制条件：<span class="math inline">\(\delta_i\ge0, (i=1\sim N)\)</span>；<span class="math inline">\(y_i(\omega^TX_i+b)\ge1-\delta_i, (i=1\sim N)\)</span></p>
+<p>线性不可分情况下的优化问题转化为了凸优化问题。</p>
+<blockquote>
+<p>Tips：</p>
+<ul>
+<li><span class="math inline">\(C\)</span>是人为实现设定的参数，这些参数通常称为算法的超参数（hyper parameter）</li>
+<li>所有样本均必须划分正确时称为硬间隔（hard margin），软间隔（soft margin）则允许某些样本不满足约束</li>
+</ul>
+</blockquote>
+<h1 id="低维到高维的映射">低维到高维的映射</h1>
+<p>假设在一个<span class="math inline">\(M\)</span>维空间上随机取<span class="math inline">\(N\)</span>个训练样本随机的对每个训练样本赋予标签<span class="math inline">\(+1\)</span>或<span class="math inline">\(-1\)</span>，假设这些训练样本线性可分的概率为<span class="math inline">\(P(M)\)</span>，则当<span class="math inline">\(M\)</span>趋近于无穷大时，<span class="math inline">\(P(M)=1\)</span>。</p>
+<p>如果特征空间是有限维，那么必定存在一个高维特征空间使样本可分。</p>
+<p>当增加特征空间的维度<span class="math inline">\(M\)</span>时，待估计参数<span class="math inline">\((\omega, b)\)</span>也会相应增加。将训练样本从低位映射到高维，可以增加线性可分的概率。因此，如何构造一个从低维到高维的映射<span class="math inline">\(\phi(x)\)</span>称为关键问题。</p>
+<p>假设从低维到高维的映射<span class="math inline">\(\phi(x)\)</span>已经确定，那么优化问题变为：</p>
+<p>最小化：<span class="math inline">\(\frac{1}{2}||\omega||^2+C\Sigma^N_{i=1}\delta_i\)</span>或<span class="math inline">\(\frac{1}{2}||\omega||^2+C\Sigma^N_{i=1}\delta_i^2\)</span></p>
+<p>限制条件：<span class="math inline">\(\delta_i\ge0, (i=1\sim N)\)</span>；<span class="math inline">\(y_i[\omega^T\phi(X_i)+b]\ge1-\delta_i, (i=1\sim N)\)</span></p>
+<p>该优化问题仍转化为了凸优化问题，可以求解。</p>
+<h1 id="核函数的定义">核函数的定义</h1>
+<p>Vladimir Naumovich Vapnik指出我们不用知道<span class="math inline">\(\phi(x)\)</span>的具体形式，如果对于任意两个向量<span class="math inline">\(X_1\)</span>，<span class="math inline">\(X_2\)</span>，有<span class="math inline">\(K(X_1, X_2)=\phi(X_1)^T\phi(X_2)\)</span>，那么我们仍可以通过测试样本<span class="math inline">\(X\)</span>获得的类别信息，完成对测试样本类别的预测。</p>
+<p>定义<span class="math inline">\(K(X_1,X_2)\)</span>为核函数（kernel function），是一个实数（因为<span class="math inline">\(X_1,X_2\)</span>是维数相同的列向量）。</p>
+<h2 id="例子一">例子一</h2>
+<p>举例说明核函数以及低维到高维的映射<span class="math inline">\(\phi(X)\)</span>之间的相互关系。</p>
+<p>假设<span class="math inline">\(\phi(X)\)</span>是一个将二维向量映射为三维向量的映射，如：</p>
+<p><span class="math inline">\(X=[x_1,x_2]^T\)</span></p>
+<p><span class="math inline">\(\phi(X)=\phi([x_1,x_2]^T)=[x_1^2,x_1x_2,x_2^2]\)</span></p>
+<p>假设有两个二维向量：</p>
+<p><span class="math inline">\(X_1=[x_{11},x_{12}]^T\)</span> <span class="math inline">\(X_2=[x_{21},x_{22}]^T\)</span> 则：</p>
+<span class="math inline">\(\phi(X_1)=[x_{11}^2,x_{11}x_{12},x_{12}^2]\)</span> <span class="math inline">\(\phi(X_2)=[x_{21}^2,x_{21}x_{22},x_{22}^2]\)</span> 那么：
+<span class="math display">\[\begin{aligned} 
+K(X_1,X_2)&amp;=\phi(X_1)^T\phi(X_2)\\\\
+&amp;=[x_{11}^2,x_{11}x_{12},x_{12}^2][x_{21}^2,x_{21}x_{22},x_{22}^2]^T\\\\
+&amp;=x_{11}^2x_{21}^2+x_{11}x_{12}x_{21}x_{22}+x_{12}^2x_{22}^2
+\end{aligned}\]</span>
+<h2 id="例子二">例子二</h2>
+<p>举例说明已知核函数<span class="math inline">\(K\)</span>求 映射<span class="math inline">\(\phi\)</span>的粒子。</p>
+<p>假设<span class="math inline">\(X\)</span>是一个二维向量，<span class="math inline">\(X_1=[x_{11},x_{12}]^T\)</span> <span class="math inline">\(X_2=[x_{21},x_{22}]^T\)</span></p>
+假设:
+<span class="math display">\[\begin{aligned} 
+K(X_1,X_2)&amp;=(X_{11}x_{21}+x_{12}x_{22}+1)^2\\\\
+&amp;=x_{11}^2x_{21}^2+x_{12}^2x_{22}^2+1+2x_{11}x_{21}x_{12}x_{22}+2x_{11}x_{21}+2x_{12}x_{22}\\\\
+&amp;=\phi(X_1)^T\phi(X_2)
+\end{aligned}\]</span>
+<p>那么，<span class="math inline">\(\phi(X)=\phi([x_1,x_2]^T)=[x_1^2,x_2^2,1,\sqrt2x_1x_2,\sqrt2x_1,\sqrt2x_2]^T\)</span></p>
+<p>总结：核函数<span class="math inline">\(K\)</span>和映射<span class="math inline">\(\phi\)</span>是一一对应的关系，知道其中一个可以求解另一个。核函数的形式不能随意取，需要满足一定的条件才能分解为两个<span class="math inline">\(\phi\)</span>内积的形式。</p>
+<h2 id="mercer定理">Mercer定理</h2>
+<p>Mercer定理（Mercer's Theorem）：<span class="math inline">\(K(X_1,X_2)\)</span>能写成<span class="math inline">\(\phi(X_1)^T\phi(X_2)\)</span>的充要条件：</p>
+<ol type="1">
+<li><p><span class="math inline">\(K(X_1,X_2)=K(X_2,X_1)\)</span> 交换性</p></li>
+<li><p><span class="math inline">\(\forall C_i(i=1\sim N)\)</span>，<span class="math inline">\(\forall N\)</span>有<span class="math inline">\(\Sigma_{i=1}^N\Sigma_{j=1}^NC_iC_jK(X_iX_j)\ge0\)</span> 半正定性</p></li>
+</ol>
+<p><span class="math inline">\(K\)</span>只要满足交换性和半正定性，就一定能写成<span class="math inline">\(\phi\)</span>内积的形式。任何一个核函数都隐式的定义了一个称为“再生希尔伯特空间”的特征空间。因此，核函数直接决定了支持向量机与核方法的最终性能。</p>
+<h2 id="常用核函数">常用核函数</h2>
+<table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 50%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">名称</th>
+<th style="text-align: center;">表达式</th>
+<th style="text-align: center;">参数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">线性核</td>
+<td style="text-align: center;"><span class="math inline">\(K(x_i,x_j)=x_i^Tx_j\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">多项式核</td>
+<td style="text-align: center;"><span class="math inline">\(K(x_i,x_j)=(x_i^Tx_j)^d\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(d\ge 1\)</span>为多项式的次数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">高斯核</td>
+<td style="text-align: center;"><span class="math inline">\(K(x_i,x_j)=\text {exp}(-\frac {||x_i-x_j||^2}{2\sigma^2})\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sigma&gt;0\)</span>为高斯核的带宽（width）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">拉普拉斯核</td>
+<td style="text-align: center;"><span class="math inline">\(K(x_i,x_j)=\text {exp}(\frac {||x_i-x_j||}{\sigma})\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sigma&gt;0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sigmoid核</td>
+<td style="text-align: center;"><span class="math inline">\(K(x_i,x_j)=\text {tanh} (\beta x_i^Tx_j+\theta)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\text {tanh}\)</span>为双曲正切函数，<span class="math inline">\(\beta&gt;0,\theta&lt;0\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Tips：还可通过对上述核函数组合（线性组合、直积等）得到核函数</p>
+</blockquote>
+<h1 id="原问题和对偶问题">原问题和对偶问题</h1>
+<h2 id="原问题">原问题</h2>
+<p>原问题（Prime problem），自变量为多维向量<span class="math inline">\(\omega\)</span>，目标函数为<span class="math inline">\(f(\omega)\)</span>，限制条件中不等式有<span class="math inline">\(K\)</span>个，限制条件中等式有<span class="math inline">\(m\)</span>个：</p>
+<p>​ 最小化（Minimize）：<span class="math inline">\(f(\omega)\)</span></p>
+<p>​ 限制条件（Subject to）：<span class="math inline">\(g_i(\omega)\le0\)</span> <span class="math inline">\(i=1\sim K\)</span>；<span class="math inline">\(h_i(\omega)=0\)</span> <span class="math inline">\(i=1\sim m\)</span></p>
+<h2 id="对偶问题">对偶问题</h2>
+<p>使用拉格朗日乘子法得到该原问题的对偶问题，为每条约束添加拉格朗日乘子<span class="math inline">\(\alpha_i\)</span>，则拉格朗日函数<span class="math inline">\(L\)</span>：</p>
+<p><span class="math inline">\(L(\omega,\alpha,\beta)=f(\omega)+\sum_{i=1}^K\alpha_ig_i(\omega)+\sum_{i=1}^K\beta_ih_i(\omega)=f(\omega)+\alpha^Tg(\omega)+\beta^Th(\omega)\)</span></p>
+<p>其中，<span class="math inline">\(\alpha=[\alpha_1,\alpha_2,...,\alpha_K]^T\)</span>，<span class="math inline">\(\beta=[\beta_1,\beta_2,...,\beta_M]^T\)</span>，<span class="math inline">\(g(\omega)=[g_1(\omega),g_2(\omega),...,g_K(\omega)]^T\)</span>，<span class="math inline">\(h(\omega)=[h_1(\omega),h_2(\omega),...,h_M(\omega)]^T\)</span>。定义对偶问题如下：</p>
+<p>​ 最大化：<span class="math inline">\(\theta(\alpha,\beta)=\text {inf } L(\omega,\alpha,\beta)\)</span>，遍历所有<span class="math inline">\(\omega\)</span>定义域寻找使得<span class="math inline">\(L(\omega,\alpha,\beta)\)</span>最小的<span class="math inline">\(\omega\)</span></p>
+<p>​ 限制条件：<span class="math inline">\(\alpha_i\ge0, i=1\sim K\)</span></p>
+<h2 id="强对偶定理">强对偶定理</h2>
+<p>综合原问题和对偶问题的定义得到：</p>
+<p>定理一：如果<span class="math inline">\(\omega^*\)</span>是原问题的解，<span class="math inline">\((\alpha^*,\beta^*)\)</span>是对偶问题的解，则有：<span class="math inline">\(f(\omega^*)\ge\theta(\alpha^*,\beta^*)\)</span></p>
+<p>定义对偶差距（duality gap）：<span class="math inline">\(f(\omega^*)\ge\theta(\alpha^*,\beta^*)\ge0\)</span></p>
+<p>强对偶定理（strong duality theorem）：如果有<span class="math inline">\(g(\omega)=A\omega+b\)</span>，<span class="math inline">\(h(\omega)=C\omega+d\)</span>，<span class="math inline">\(f(\omega)\)</span>为凸函数，则有<span class="math inline">\(f(\omega^*)=\theta(\alpha^*,\beta^*)\)</span>，则对偶差距为0。如果原问题的目标函数是凸函数，限制条件是线性函数。那么原问题的解与对偶问题的解相等，对偶差距等于0。</p>
+<h2 id="kkt条件">KKT条件</h2>
+<p>若<span class="math inline">\(f(\omega^*)=\theta(\alpha^*,\beta^*)\)</span>，则对于所有<span class="math inline">\(i=1\sim K\)</span>，要么<span class="math inline">\(\alpha_i=0\)</span>，要么<span class="math inline">\(g_i(\omega^*)=0\)</span>，该条件称为KKT（Karush-Kuhn-Tucker)条件。</p>
+<h1 id="转化为对偶问题">转化为对偶问题</h1>
+<p>为了使支持向量机的原问题满足强对偶问题，对原问题改造使得其满足强对偶定理：</p>
+<p>​ 最小化：<span class="math inline">\(\frac{1}{2}||\omega||^2-C\Sigma^N_{i=1}\delta_i\)</span>或<span class="math inline">\(\frac{1}{2}||\omega||^2+C\Sigma^N_{i=1}\delta_i^2\)</span></p>
+<p>​ 限制条件：<span class="math inline">\(\delta_i\le0, (i=1\sim N)\)</span>；<span class="math inline">\(1+\delta_i-y_i\omega^T\phi(X_i)-y_ib\le0, (i=1\sim N)\)</span></p>
+<p>对偶问题形式（<span class="math inline">\(g_i(\omega)\)</span>为两个不等式，<span class="math inline">\(h_i(\omega)\)</span>不存在）：</p>
+<p>最大化：<span class="math inline">\(\theta(\alpha,\beta)=\underset{\omega,\delta_i,b}{\text {inf}}\{1/2||\omega||^2-C\sum_{i=_1}^{N}\beta_i\delta_i+\sum _{i=1}^N\alpha_i[1+\delta_i-y_i\omega^T\phi(X_i)-y_ib]\)</span></p>
+<p>限制条件：<span class="math inline">\(\alpha_i\ge0\)</span>；<span class="math inline">\(\beta_i\ge0\)</span></p>
+<p><span class="math inline">\(\theta\)</span>对<span class="math inline">\((\omega,b,\delta_i)\)</span>求带，并令导数为0可以得到：</p>
+<ul>
+<li><span class="math inline">\(\omega=\sum _{i=1}^N\alpha_iy_i\phi(X_i)\)</span></li>
+<li><span class="math inline">\(\alpha_i+\beta_i=C\)</span></li>
+<li><span class="math inline">\(\sum _{i=1}^N\alpha_iy_i=0\)</span></li>
+</ul>
+<p>将上式代入，得到支持向量机原问题的对偶问题：</p>
+<p>​ 最大化：<span class="math inline">\(\theta(\alpha)=\sum_{i=1}^N\alpha_i-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Ny_iy_j\alpha_i\alpha_j\phi(X_i)^T\phi(X_j)\)</span></p>
+<p>​ 限制条件：<span class="math inline">\(0\le \alpha_i\le C, (i=1\sim N)\)</span>；<span class="math inline">\(\sum _{i=1}^N\alpha_iy_i=0, (i=1\sim N)\)</span></p>
+<p>该问题为二次规划问题，可通过最优化算法直接求解。</p>
+<h1 id="算法总体流程">算法总体流程</h1>
+<p>由于<span class="math inline">\(\phi(X_i)^T\phi(X_j)=K(X_i,X_j)\)</span>，当有核函数<span class="math inline">\(K(X_i,X_j)\)</span>后就能求解该最优化对偶问题，求解出<span class="math inline">\(\alpha_i\)</span>后求解<span class="math inline">\(\omega\)</span>（不一定具有显示形式）。</p>
+<p>核函数戏法（kernel trick）：不用知道<span class="math inline">\(\phi(x)\)</span>的具体形式就可以得到<span class="math inline">\(\omega^T\phi(x)+b\)</span>的值，划分超平面<span class="math inline">\(\omega^T\phi(X)+b=\sum _{i=1}^N\alpha_iy_iK(X_i,X)+b\)</span>。因此：</p>
+<ul>
+<li>如果<span class="math inline">\(\sum _{i=1}^N\alpha_iy_iK(X_i,X)+b\le 0\)</span>，那么<span class="math inline">\(X\in C_1\)</span>类</li>
+<li>如果<span class="math inline">\(\sum _{i=1}^N\alpha_iy_iK(X_i,X)+b&lt; 0\)</span>，那么<span class="math inline">\(X\in C_2\)</span>类</li>
+</ul>
+<h2 id="支持向量机训练和测试的流程">支持向量机训练和测试的流程</h2>
+<p>训练过程：</p>
+<ul>
+<li><p>输入训练数据<span class="math inline">\(\{(X_i,y_i)\}\)</span>，<span class="math inline">\(i=1\sim N\)</span>，其中<span class="math inline">\(y_i=\pm 1\)</span>是标签</p></li>
+<li><p>求解如下的优化问题得到<span class="math inline">\(\alpha_i\)</span>：</p>
+<p>​ 最大化：<span class="math inline">\(\theta(\alpha)=\sum_{i=1}^N\alpha_i-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Ny_iy_j\alpha_i\alpha_j\phi(X_i)^T\phi(X_j)\)</span></p>
+<p>​ 限制条件：<span class="math inline">\(0\le \alpha_i\le C, (i=1\sim N)\)</span>；<span class="math inline">\(\sum _{i=1}^N\alpha_iy_i=0, (i=1\sim N)\)</span></p></li>
+<li><p>根据<span class="math inline">\(\alpha_i\)</span>求<span class="math inline">\(b\)</span></p>
+<p>​ 找一个<span class="math inline">\(\alpha_i\ne0\)</span>且<span class="math inline">\(\alpha_i\ne c\)</span>，则<span class="math inline">\(b=\frac {1-\sum _{j=1}^N\alpha_iy_iy_jK(X_j,X_i)} {y_i}\)</span></p></li>
+</ul>
+<p>测试过程：考察测试数据<span class="math inline">\(X\)</span>，预测其类别<span class="math inline">\(Y\)</span></p>
+<ul>
+<li>如果<span class="math inline">\(\sum _{i=1}^N\alpha_iy_iK(X_i,X)+b\le 0\)</span>，那么<span class="math inline">\(y=+1\)</span></li>
+<li>如果<span class="math inline">\(\sum _{i=1}^N\alpha_iy_iK(X_i,X)+b&lt; 0\)</span>，那么<span class="math inline">\(y=-1\)</span></li>
+</ul>
+<h1 id="识别系统的性能度量">识别系统的性能度量</h1>
+<p>如果我们不知道数据类别的先验分布，单纯用识别率来判断系统的好坏是没有意义的。</p>
+<h2 id="混淆矩阵confusion-matrix">混淆矩阵（confusion matrix）</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">真实情况/预测结果</th>
+<th style="text-align: center;">正例</th>
+<th style="text-align: center;">反例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">正例</td>
+<td style="text-align: center;"><span class="math inline">\(TP\)</span> （真正例）</td>
+<td style="text-align: center;"><span class="math inline">\(FN\)</span>（假正例）</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">反例</td>
+<td style="text-align: center;"><span class="math inline">\(FP\)</span> （假正例）</td>
+<td style="text-align: center;"><span class="math inline">\(TN\)</span> （真反例）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>正样本数：<span class="math inline">\(TP+FN\)</span></p></li>
+<li><p>负样本数：<span class="math inline">\(FP+TN\)</span></p></li>
+<li><p>识别率：<span class="math inline">\((TP+TN)/(TP+TN+FP+FN)\)</span></p></li>
+<li><p>查准率：<span class="math inline">\(P=\frac {TP}{TP+FP}\)</span></p></li>
+<li><p>查全率：<span class="math inline">\(R=\frac {TP}{TP+FN}\)</span></p></li>
+<li><p>瞎猜率：<span class="math inline">\(\max((TP+FN), (FP+TN))/(TP+TN+FP+FN)\)</span> （二分类下的一种瞎猜率）</p></li>
+</ul>
+<blockquote>
+<p>Tips：<span class="math inline">\(TP\)</span> （true positive)、<span class="math inline">\(TN\)</span>（true negative）、<span class="math inline">\(FP\)</span>（false positive)、<span class="math inline">\(FN\)</span>（false negative）</p>
+</blockquote>
+<h2 id="roc曲线">ROC曲线</h2>
+<p>ROC全称是“受试者工作特征”曲线，纵轴是“真正例率”，横轴是”假正例率“。</p>
+<ul>
+<li><p>AUC（area under curve）：表示ROC曲线下面的面积，越大说明系统性能越好</p></li>
+<li><p>EER（equal error rate）：等错误率，ROC曲线中左上角到右下角的直线交ROC曲线于一点，该点横坐标为EER。EER越小说明系统性能越好</p></li>
+</ul>
+<h1 id="多类问题">多类问题</h1>
+<p>多分类学习的基本思路是“拆解法”，即将多分类任务拆为若干个二分类任务求解。具体来说，先对问题进行拆分，然后为拆除的每个二分类任务训练一个分类器；在测试时，对这些分类器的预测结果进行集成已获得最终的多分类结果。这里的关键是如何对多分类任务进行拆分，以及如何对多个分类器进行集成。</p>
+<p>最经典的拆分策略有三种：一对一（One vs One，简称OvO）、一对其余（One vs Rest，简称OvR）和多对多（Many vs Many，简称MvM）。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86/" rel="tag"># 数学物理</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-1-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D/" rel="prev" title="1. 机器学习介绍——学习">
+                  <i class="fa fa-chevron-left"></i> 1. 机器学习介绍——学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="next" title="3. 人工神经网络——学习《机器学习（浙大公开课）》">
+                  3. 人工神经网络——学习《机器学习（浙大公开课）》 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

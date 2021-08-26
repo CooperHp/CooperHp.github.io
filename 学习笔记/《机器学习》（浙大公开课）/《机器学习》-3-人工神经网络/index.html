@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="机器学习（浙大） 《机器学习（周志华）》  神经元的数学模型 人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。 数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3. 人工神经网络——学习《机器学习（浙大公开课）》">
+<meta property="og:url" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Hu说扒道">
+<meta property="og:description" content="机器学习（浙大） 《机器学习（周志华）》  神经元的数学模型 人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。 数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图1.png">
+<meta property="og:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图2.png">
+<meta property="og:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图3.jpg">
+<meta property="article:published_time" content="2021-08-13T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-13T16:00:00.000Z">
+<meta property="article:author" content="Cooper">
+<meta property="article:tag" content="数学物理">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图1.png">
+
+
+<link rel="canonical" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89&#x2F;%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C&#x2F;&quot;,&quot;path&quot;:&quot;学习笔记&#x2F;《机器学习》（浙大公开课）&#x2F;《机器学习》-3-人工神经网络&#x2F;&quot;,&quot;title&quot;:&quot;3. 人工神经网络——学习《机器学习（浙大公开课）》&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>3. 人工神经网络——学习《机器学习（浙大公开课）》 | Hu说扒道</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Hu说扒道</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">做自己喜欢的事。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">神经元的数学模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E5%99%A8%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">感知器算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E5%99%A8%E7%AE%97%E6%B3%95%E6%94%B6%E6%95%9B%E5%AE%9A%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">感知器算法收敛定理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E5%99%A8%E7%AE%97%E6%B3%95%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">感知器算法的意义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A0%E6%8B%9F%E5%90%88%E5%92%8C%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">3.1.</span> <span class="nav-text">欠拟合和过拟合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AF%92%E5%86%AC"><span class="nav-number">4.</span> <span class="nav-text">人工神经网络的第一次寒冬</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">多层神经网络的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">5.1.</span> <span class="nav-text">多层前馈神经网络</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">梯度下降法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">后向传播算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">后向传播算法的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">8.1.</span> <span class="nav-text">激活函数的改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%88%E5%AF%B9%E5%A4%9A%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">8.2.</span> <span class="nav-text">针对多分类问题的改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">8.3.</span> <span class="nav-text">随机梯度下降法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE"><span class="nav-number">9.</span> <span class="nav-text">参数设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E8%A7%81%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">10.</span> <span class="nav-text">其他常见神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rbf%E7%BD%91%E7%BB%9C"><span class="nav-number">10.1.</span> <span class="nav-text">RBF网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#art%E7%BD%91%E7%BB%9C"><span class="nav-number">10.2.</span> <span class="nav-text">ART网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#som%E7%BD%91%E7%BB%9C"><span class="nav-number">10.3.</span> <span class="nav-text">SOM网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A7%E8%81%94%E7%9B%B8%E5%85%B3%E7%BD%91%E7%BB%9C"><span class="nav-number">10.4.</span> <span class="nav-text">级联相关网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elman%E7%BD%91%E7%BB%9C"><span class="nav-number">10.5.</span> <span class="nav-text">Elman网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#boltzmann%E6%9C%BA"><span class="nav-number">10.6.</span> <span class="nav-text">Boltzmann机</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cooper"
+      src="/images/naruto.jpg">
+  <p class="site-author-name" itemprop="name">Cooper</p>
+  <div class="site-description" itemprop="description">分享一些个人的学习笔记、资料和想法。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="/images/wechat.jpg" title="微信 → &#x2F;images&#x2F;wechat.jpg"><i class="fab fa-weixin fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/zai-xia-shu-liao-73" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;zai-xia-shu-liao-73" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3. 人工神经网络——学习《机器学习（浙大公开课）》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-13 08:00:00" itemprop="dateCreated datePublished" datetime="2021-08-13T08:00:00+08:00">2021-08-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-08-14 00:00:00" itemprop="dateModified" datetime="2021-08-14T00:00:00+08:00">2021-08-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB?p=15&amp;spm_id_from=pageDriver">机器学习（浙大）</a></p>
+<p>《机器学习（周志华）》</p>
+</blockquote>
+<h1 id="神经元的数学模型">神经元的数学模型</h1>
+<p>人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。</p>
+<p>数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑的模仿既不可能也不必须。应该用数学和逻辑推理的方法，从现有的计算机结构中获得确定的知识，而不是一味地强调人脑的模仿。</p>
+<p>支持向量机是数理学派代表，人工神经网络是人工智能的仿生学派代表。 <span id="more"></span></p>
+<p>1943年，心理学家W. S. MoCulloch和数理逻辑学家W. Pitts建立了单个神经元（neuron）的数学模型，即MP模型，<span class="math inline">\(y=\phi(\omega^TX+b)\)</span>，类似于泰勒展开（<span class="math inline">\(\phi\)</span>为激活函数，<span class="math inline">\(\omega\)</span>为权重，<span class="math inline">\(b\)</span>为权重）。</p>
+<p>神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所做出的交互反应。神经网络中最基本的成分是神经元模型。</p>
+<p>从计算机科学的角度看，我们可以先不考了神经网络是否真的模拟了生物神经网络，只需将一个神经网络视为包含了许多参数的数学模型，这个模型是若干个函数相互嵌套代入得到的。</p>
+<h1 id="感知器算法">感知器算法</h1>
+<p>美国计算机科学家Frank Rosenblatt于1957年从纯数学的角度重新考察MP模型，通过机器学习方法可自动获得权重<span class="math inline">\(\omega\)</span>和权重<span class="math inline">\(b\)</span>，从而提出感知器算法（perceptron algorithm）用于二分类问题。</p>
+<p>感知器由两层神经元组成，输入层接受外接输入信号后传递给输出层，输出层是MP神经元，亦称“阈值逻辑单元”。感知器能够容易实现逻辑与、或、非运算。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图1.png" width="500"></p>
+<p>对于一个二分类问题：</p>
+<ul>
+<li>若<span class="math inline">\(y_i=+1\)</span>，则<span class="math inline">\(\omega^TX_i+b&gt;0\)</span></li>
+<li>若<span class="math inline">\(y_i=-1\)</span>，则<span class="math inline">\(\omega^TX_i+b&lt;0\)</span></li>
+</ul>
+<p>当训练数据<span class="math inline">\(X_i\)</span>满足上述条件时称该数据获得了平衡，否则没有获得平衡。上述问题与支持向量机的二分类问题相同。</p>
+<p>感知器算法的步骤：</p>
+<ol type="1">
+<li>随机选择<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span></li>
+<li>取一个训练样本<span class="math inline">\((X,y)\)</span>
+<ol type="1">
+<li>若<span class="math inline">\(\omega^TX_i+b&gt;0\)</span>，且<span class="math inline">\(y=-1\)</span>，则：<span class="math inline">\(\omega=\omega-X\)</span>，<span class="math inline">\(b=b-1\)</span></li>
+<li>若<span class="math inline">\(\omega^TX_i+b&lt;0\)</span>，且<span class="math inline">\(y=+1\)</span>，则：<span class="math inline">\(\omega=\omega+X\)</span>，<span class="math inline">\(b=b+1\)</span></li>
+</ol></li>
+<li>再取另一个样本<span class="math inline">\((X,y)\)</span>，回到(2)</li>
+<li>终止条件：直到所有输入输出对<span class="math inline">\((X,y)\)</span>均不满足(2)中(2.1)和(2.2)，退出循环</li>
+</ol>
+<p>其中不断迭代修改<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>的目的是使不平衡的样本向平衡不断靠近，终止条件是<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>使得所有样本均达到平衡状态。Rosenblatt证明了只要训练数据线性可分（感知器算法收敛定理），那么感知器算法不会无限循环，可以在有限步后终止。</p>
+<h2 id="感知器算法收敛定理">感知器算法收敛定理</h2>
+<p>对于<span class="math inline">\(X_i\)</span>，定义其增广向量。若<span class="math inline">\(y_i=+1\)</span>，则<span class="math inline">\(\vec {X_i}=[X_i,1]^T\)</span>；若<span class="math inline">\(y_i=-1\)</span>，则<span class="math inline">\(\vec {X_i}=[X_i,-1]^T\)</span>。原问题可以简化为：寻找一个<span class="math inline">\(\vec \omega=[\omega,b]^T\)</span>，使得对<span class="math inline">\(i=1 \sim N\)</span>，有<span class="math inline">\(\vec \omega^T\vec {X_i}&gt;0\)</span>。感知器算法中的第二步可以写为：若<span class="math inline">\(\vec \omega^T\vec {X_i}\le0\)</span>，则<span class="math inline">\(\vec \omega=\vec \omega+\vec {X_i}\)</span>。可以证明，基于增广向量的感知器算法和原来的感知器算法完全等价。</p>
+<p>对于<span class="math inline">\(N\)</span>个增广向量<span class="math inline">\(\vec {X_1},\vec {X_2},...,\vec {X_N}\)</span>，如果存在一个权重向量<span class="math inline">\(\vec {\omega_{opt}}\)</span>（该条件等价于训练数据线性可分），使得对于每个<span class="math inline">\(\vec {X_i}\)</span>能够使得<span class="math inline">\(\vec \omega^T\vec {X_i}&gt;0\)</span>。那么感知器算法一定能在有限步内找到一个<span class="math inline">\(\vec \omega\)</span>。</p>
+<h1 id="感知器算法的意义">感知器算法的意义</h1>
+<p>对于训练数据线性可分的分类问题，感知器算法的结果并没有支持向量机好。感知器算法的意义在于提出了一套机器学习算法的框架，机器学习的目的是根据训练数据集寻找预测函数<span class="math inline">\(y=f(X,\theta)\)</span>，其中<span class="math inline">\(X\)</span>是训练数据集，<span class="math inline">\(\theta\)</span>是待求变量；机器学习的过程就是运用数据集求出<span class="math inline">\(\theta\)</span>；之后就可以用<span class="math inline">\(\theta\)</span>和<span class="math inline">\(f(X,\theta)\)</span>求出任意<span class="math inline">\(X\)</span>对应的<span class="math inline">\(y\)</span>，完成对测试样本的预测。</p>
+<p>在感知器算法中，待估计参数<span class="math inline">\(\theta=(\omega,b)\)</span>，而<span class="math inline">\(f(X,\theta)=\text {sgn}(\omega^TX+b)\)</span>。</p>
+<h2 id="欠拟合和过拟合">欠拟合和过拟合</h2>
+<p>训练数据的复杂度应该与<span class="math inline">\(f\)</span>的复杂度相当，当训练数据比预测函数更复杂时称为<strong>欠拟合</strong>（underfit），否则称为<strong>过拟合</strong>（overfit）。过拟合将会导致模型在测试数据集上非常准确，而在测试集上预测性能糟糕。</p>
+<h1 id="人工神经网络的第一次寒冬">人工神经网络的第一次寒冬</h1>
+<p>1969年，Marvin Minsky著《感知器》，明确定义线性可分与线性不可分，并指出很多实际问题是线性不可分的且无法用感知器求解（感知器在求解非线性可分问题是<span class="math inline">\(\omega\)</span>会发生振荡，很难稳定），为感知器的应用研究画上句号。1969年~1980年，人工神经网络方面的研究经历第一次寒冬。直到上世纪80年代初，基于多个神经元的多层神经网络诞生，初步具备解决非线性可分问题。</p>
+<h1 id="多层神经网络的结构">多层神经网络的结构</h1>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图2.png" width="500"></p>
+<p>多层神经网络中输入层与输出层之间的多层神经元称为隐藏层（hidden layer），隐藏层和输出层都是具有激活函数的功能神经元。</p>
+<p>输入为<span class="math inline">\(X=\{X_1,X_2\}\)</span>，输出为<span class="math inline">\(y\)</span>，逐层写出输入到输出的关系：</p>
+<ul>
+<li><span class="math inline">\(a_1=\omega_{11}x_1+\omega_{12}x_2+b_1\)</span> （第一个神经元）</li>
+<li><span class="math inline">\(a_2=\omega_{21}x_1+\omega_{22}x_2+b_2\)</span> （第一个神经元）</li>
+<li><span class="math inline">\(z_1=\phi(a_1)\)</span> （非线性函数，激活函数）</li>
+<li><span class="math inline">\(z_2=\phi(a_2)\)</span> （非线性函数，激活函数）</li>
+<li><span class="math inline">\(y=\omega_1z_1+\omega_2z_2+b_3\)</span> （第三个神经元）</li>
+</ul>
+<p>或</p>
+<p><span class="math inline">\(y=\omega_1\phi(\omega_{11}x_1+\omega_{12}x_2+b_1)+\omega_2\phi(\omega_{21}x_1+\omega_{22}x_2+b_2)+b_3\)</span></p>
+<p>待求参数为所有<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>。如果层与层之间没有<strong>非线性函数</strong><span class="math inline">\(\phi\)</span>，那么两层神经网络仍是线性模型，多层神经网络模型将退化为一个神经元的感知器模型。其中，如果<span class="math inline">\(\phi\)</span>为阶跃函数： <span class="math display">\[
+\phi(x)=\left\{\begin{matrix}1&amp;x&gt;0\\0&amp;x&lt;0
+\end{matrix}\right.
+\]</span> <strong>定理</strong>：如果非线性函数采用阶跃函数，那么三层神经网络可以模拟任意的非线性函数。</p>
+<h2 id="多层前馈神经网络">多层前馈神经网络</h2>
+<p>如图所示每层神经元与下一层神经元全互连，神经元之间不存在同层连接，也不存在跨层连接，称为多层前馈神经网络（multi-layer feedforward neural networks）。输入层仅接受输入，不进行函数处理，隐藏层与输出层包含激活函数的功能神经元。只包含一层隐藏层称为两层网络或单隐层网络。</p>
+<p><img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/图3.jpg" width="500"></p>
+<h1 id="梯度下降法">梯度下降法</h1>
+<p>人工神经网络的训练策略：</p>
+<ul>
+<li>基于实践经验，确定神经网络的层数和每层神经元的个数</li>
+<li>用梯度下降法求解目标函数的局部极小值</li>
+</ul>
+<p>梯度下降法（gradient descent method）求解局部极小值：</p>
+<ol type="1">
+<li><p>随机选取<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>的初始值<span class="math inline">\((\omega^{(0)},b^{(0)})\)</span></p></li>
+<li><p>应用迭代算法求目标函数的局部极值，在第<span class="math inline">\(n\)</span>步迭代中，<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>的更新公式如下： <span class="math display">\[
+\omega^{(n+1)}=\omega^{(n)}-\alpha\frac {\partial E}{\partial \omega}|_{\omega^{(n)},b^{(n)}}
+\]</span></p></li>
+</ol>
+<p><span class="math display">\[
+b^{(n+1)}=b^{(n)}-\alpha\frac {\partial E}{\partial b}|_{\omega^{(n)},b^{(n)}}
+\]</span></p>
+<p>其中，<span class="math inline">\(\alpha\)</span>为学习率（learning rate），当<span class="math inline">\(\alpha\)</span>过大时可能无法收敛到极值点，而<span class="math inline">\(\alpha\)</span>过大时达到极值点需要非常长的时间，只有比较适合的<span class="math inline">\(\alpha\)</span>才能快速收敛到极值点。</p>
+<h1 id="后向传播算法">后向传播算法</h1>
+<p>后向传播算法（back propagation algorithm，BP算法）的核心是根据链式求导法则，用已经算出的一些偏导数来直接求未计算的偏导数，比直接计算所有偏导数要方便很多。先计算距离输出较近的偏导数，再计算距离输出较远的偏导数。</p>
+<p>一般情况下人工神经网络后向传播算法的步骤：</p>
+<ol type="1">
+<li><p>对神经网络每一层的各个神经元，随机选取相应的<span class="math inline">\(\omega\)</span>，<span class="math inline">\(b\)</span>的值</p></li>
+<li><p>前向计算，对于输入的训练数据，计算并保留每一层的输出值，直到计算出最后一层的输出<span class="math inline">\(y\)</span></p></li>
+<li><p>设置目标函数<span class="math inline">\(E\)</span>，例如<span class="math inline">\(E=\frac{1}{2}(y-Y)^2\)</span>，用后向传播算法对每个<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>，计算<span class="math inline">\(\frac {\partial E}{\partial \omega}\)</span>和<span class="math inline">\(\frac {\partial E}{\partial b}\)</span></p></li>
+<li><p>利用梯度下降法，更新<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span></p>
+<p><span class="math inline">\(\omega^{(n+1)}=\omega^{(n)}-\alpha\frac {\partial E}{\partial \omega}|_{\omega^{(n)},b^{(n)}}\)</span></p>
+<p><span class="math inline">\(b^{(n+1)}=b^{(n)}-\alpha\frac {\partial E}{\partial b}|_{\omega^{(n)},b^{(n)}}\)</span></p></li>
+<li><p>回到2.，不断循环，直到所有<span class="math inline">\(|\frac {\partial E}{\partial \omega}|_{\omega^{(n)},b^{(n)}}\)</span>和<span class="math inline">\(|\frac {\partial E}{\partial b}|_{\omega^{(n)},b^{(n)}}\)</span>很小时为止，退出循环</p></li>
+</ol>
+<blockquote>
+<p>Tips：</p>
+<ul>
+<li>一般称用BP算法训练的多层前馈神经网络为BP网络</li>
+<li>基于累积误差最小化的更新规则从标准BP算法得到累积BP算法</li>
+</ul>
+</blockquote>
+<h1 id="后向传播算法的应用">后向传播算法的应用</h1>
+<h2 id="激活函数的改进">激活函数的改进</h2>
+<p>如果层与层之间的非线性函数是阶跃函数，那么三层神经网络模型可以模拟任意决策函数。但是，后向传播算法需要激活函数求导，而阶跃函数作为激活函数时具有不连续，不光滑等不太好的性质。</p>
+<p>阶跃函数改为Sigmoid函数​，双曲正切函数​。这些函数不仅在​有导数，而且作为激活函数也能保证三层神经网络模型可以模拟任意决策函数。</p>
+<p>因此，可以将阶跃函数改为<strong>Sigmoid函数</strong><span class="math inline">\(\phi(x)=\frac {1}{1+e^{-x}}\)</span>，<strong>双曲正切函数</strong><span class="math inline">\(\tanh(x)=\frac {e^x-e^{-x}}{e^x+e^{-x}}\)</span>。这些函数不仅在<span class="math inline">\(0\)</span>有导数，而且作为激活函数也能保证三层神经网络模型可以模拟任意决策函数。</p>
+<h2 id="针对多分类问题的改进">针对多分类问题的改进</h2>
+<p>对于<span class="math inline">\(K\)</span>分类问题，神经网络模型的最后一层输出<span class="math inline">\(y\)</span>有<span class="math inline">\(K\)</span>个维度，即<span class="math inline">\(y=[1, 0, ..0,0]^T\)</span>，<span class="math inline">\(y=[0, 1, ..0,0]^T\)</span>，<span class="math inline">\(y=[0, 0, ..0,1]^T\)</span>，这些向量称为独热向量（one-hot vector）。</p>
+<p>基于SOFTMAX函数和交叉熵（Cross-entropy）的目标函数，后者源于信息论。</p>
+<p>SOFTMAX函数： <span class="math display">\[
+y_i=\frac {\exp(z_i)}{\sum _{j=1}^{K}\exp(z_j)}, i=1,2,...,K
+\]</span> 基于交叉熵（Cross-entropy）的目标函数： <span class="math display">\[
+E(y)=-\sum _{i=1}^KY_i\log(y_i)
+\]</span> 该式反映的是两个概率分布<span class="math inline">\(Y\)</span>和<span class="math inline">\(y\)</span>之间的相似程度，根据信息论可得到：</p>
+<ul>
+<li><span class="math inline">\(E(y)\ge0\)</span></li>
+<li>当<span class="math inline">\(Y\)</span>确定时，当且仅当<span class="math inline">\(y=Y\)</span>时，<span class="math inline">\(E(y)\)</span>取最小值</li>
+</ul>
+<p>改进后仍用梯度下降法求解，并且偏导数很容易计算。</p>
+<h2 id="随机梯度下降法">随机梯度下降法</h2>
+<p>在前述的后向传播算法中的第4步中，每输入一个样本都需要更新所有参数，这在实际训练中是非常慢的。采用随机梯度下降法（Stochastic Gradient Descent Method，SGD）就可以：</p>
+<ul>
+<li>不用每输入一个样本就去更新参数，而是输入一批样本（batch或mini-batch），求出这些样本的梯度平均值后，根据这个平均值改变参数，在神经网络训练中，batch的样本数（batch size）大致设置为50~200不等</li>
+<li>对于所有训练数据，根据batch size分割为各个不同的batch。将各个batch依次送入神经网络，不断更新梯度，按照batch遍历所有训练样本一次成为一个epoch</li>
+<li>实际训练中，根据batch多次遍历所有训练样本，即训练不止一个epoch。对于每个epoch，需要随机打乱所有训练样本的次序，以保证每次的batch都不同，增加batch中训练样本的随机性</li>
+</ul>
+<blockquote>
+<p>Tips：</p>
+<ul>
+<li>读取训练集一遍称为进行了“一轮”（one epoch）学习</li>
+<li>随机梯度下降法有机会跳出局部极小值继续搜索</li>
+</ul>
+</blockquote>
+<h1 id="参数设置">参数设置</h1>
+<p>三个训练神经网络的建议：</p>
+<ul>
+<li>一般情况下，在训练集上的目标函数的平均值（cost）会随着训练的深入而不断减小，如果这个指标有增大的情况，停止训练，其原因可能是：
+<ul>
+<li>采用的模型不够复杂，以致于不能在训练集上完全拟合</li>
+<li>已经训练很好了</li>
+</ul></li>
+<li>分出 一些<strong>验证集</strong>（validation set），训练的目标是在验证集上获取最大的识别率。因此训练一段时间后，必须在验证集上测试识别率，保存使验证集上识别率最大的模型参数作为最后的结果</li>
+<li>注意调整学习率（learning rate），如果刚训练几步损失函数就增加，一般来说是学习率太高；如果每次损失函数变化很小，说明学习率太低。根据实际情况适度调整学习率是使神经网络快速收敛的基础</li>
+</ul>
+<p>训练神经网络的各种经验：</p>
+<ul>
+<li><p>目标函数可以加入正则项（regularization term），其中<span class="math inline">\(L(\omega,b)\)</span>是原来的目标函数，<span class="math inline">\(\frac{\lambda}{2}||W||^2\)</span>是正则项，用于描述网络复杂度，<span class="math inline">\(\lambda\)</span>是权值衰减系数（weight decay parameter）要保证足够小。 <span class="math display">\[
+\text {Minimize } E(\omega,b)=L(\omega,b)+\frac{\lambda}{2}||\omega||^2
+\]</span></p></li>
+<li><p>训练数据归一化，保证训练数据每个维度在相对固定的区间中。如：<span class="math inline">\(newX=\frac {X-\text {mean}(X)}{\text {std}(X)}\)</span></p></li>
+<li><p>参数<span class="math inline">\(\omega\)</span>和b的初始化。SGD中初始化如果是随机选择<span class="math inline">\(\omega\)</span>和<span class="math inline">\(b\)</span>很容易出现梯度消失的问题。一种比较简单有效的方法是：<span class="math inline">\((\omega,b)\)</span>初始化从区间<span class="math inline">\((-\frac {1}{\sqrt(d)},\frac {1}{\sqrt(d)})\)</span>均匀随机取值，其中<span class="math inline">\(d\)</span>为<span class="math inline">\((\omega,b)\)</span>是所在层的神经元个数</p></li>
+<li><p>batch normalization，对每一层输入进行归一化</p></li>
+<li><p>参数的更新策略，<strong>Adam算法</strong>结合Adagrad和Momentum，解决了梯度绝对值分量不平衡和梯度方向随机性。此外，Adam算法引入了逐渐降低梯度搜索步长的机制</p></li>
+</ul>
+<blockquote>
+<p>Tips：</p>
+<ul>
+<li>只需一个包含足够多神经元的隐藏层，多层前馈网络就能以任意精度逼近任意复杂度的连续函数。但是如何设置隐藏层神经元个数是一个没有解决的问题，实际中通常靠试错法调整</li>
+</ul>
+</blockquote>
+<h1 id="其他常见神经网络">其他常见神经网络</h1>
+<h2 id="rbf网络">RBF网络</h2>
+<p>RBF（Radial Basis Function，径向基函数）网络，是一种单隐藏层前馈神经网络，它使用径向奇函数作为隐藏层神经元激活函数，而输出层则是对隐藏层神经元输出的线性组合。</p>
+<p>可以证明，具有足够多隐藏层神经元的RBF网络能以任意精度逼近任意连续函数。</p>
+<h2 id="art网络">ART网络</h2>
+<p>ART（Adaptive Resonance Theory，自适应谐振理论）网络是竞争型学习的重要代表，该网络由比较层、识别层、识别阈值和重置模块构成。</p>
+<p>比较层负责接收输入样本，并将其传递给识别层神经元。识别层每个神经元对应一个模式类，神经元数目可在训练过程中动态增长以增加新的模式类。识别层在接收到比较层的输入信号后，识别层神经元之间相互竞争以产生获胜神经元。</p>
+<blockquote>
+<p>Tips：竞争型学习（competitive learning）是神经网络中一种常用的无监督学习策略。网络的输出神经元相互竞争，每一时刻仅有一个竞争获胜的神经元被激活，其他神经元的状态被抑制，这种机制亦称为“胜者通吃”（winner-take-all）原则。</p>
+</blockquote>
+<h2 id="som网络">SOM网络</h2>
+<p>SOM（Self-Organizing Map，自组织映射）网络是一种竞争学习型的无监督神经网络，能将高维输入数据映射到低维空间（通常是二维），同时保持输入数据在高维空间的拓扑结构，即将高维空间中相似的样本点映射到网络输出层中的邻近神经元。</p>
+<h2 id="级联相关网络">级联相关网络</h2>
+<p>级联相关（Cascade-Correlation）网络是结构自适应网络的重要代表，有两个主要成分“级联”和“相关”。级联是指建立层次连接的层级结构。在开始训练时，网络只有输入层和输出层，处于最小拓扑结构。随着训练的进行，新的隐藏层神经元逐渐加入，从而创建起层级结构。当心的隐藏层神经元加入时，其输入端连接权值是冻结固定的。相关是指最大化新神经元的输出与网络误差之间的 相关性来训练相关的参数。</p>
+<h2 id="elman网络">Elman网络</h2>
+<p>Elman网络是最常用的递归神经网络之一，其结构与前馈网络相似，但隐藏层神经元的输出被反馈回来，与下一时刻输入层神经元提供的信号一起，作为隐藏层神经元在下一时刻的输入。</p>
+<blockquote>
+<p>Tips：递归神经网络（recurrent neural networks）允许网络中出现环形结构，从而可让一些神经元的输出反馈回来作为输入信号。</p>
+</blockquote>
+<h2 id="boltzmann机">Boltzmann机</h2>
+<p>Boltzmann机是一种基于能量的模型，神经元分为两层：显层和隐层。显层用于表示数据的输入和输出，隐层则被理解为数据的内在表达。</p>
+<blockquote>
+<p>Tips：该类模型是为网络状态定义一个能量，能量最小化时网络达到理想状态，而网络的训练就是在最小化这个能量函数。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6%E7%89%A9%E7%90%86/" rel="tag"># 数学物理</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="prev" title="2. 支持向量机——学习《机器学习（浙大公开课）》">
+                  <i class="fa fa-chevron-left"></i> 2. 支持向量机——学习《机器学习（浙大公开课）》
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="4. 深度学习——《机器学习（浙大公开课）》">
+                  4. 深度学习——《机器学习（浙大公开课）》 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cooper</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
