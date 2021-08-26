@@ -22,7 +22,7 @@
 <meta name="description" content="分享一些个人的学习笔记、资料和想法。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hu说扒道">
-<meta property="og:url" content="http://example.com/page/2/index.html">
+<meta property="og:url" content="http://example.com/page/4/index.html">
 <meta property="og:site_name" content="Hu说扒道">
 <meta property="og:description" content="分享一些个人的学习笔记、资料和想法。">
 <meta property="og:locale">
@@ -30,11 +30,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/page/2/">
+<link rel="canonical" href="http://example.com/page/4/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:true,&quot;isPost&quot;:false,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;&quot;,&quot;path&quot;:&quot;page&#x2F;2&#x2F;index.html&quot;,&quot;title&quot;:&quot;&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:true,&quot;isPost&quot;:false,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;&quot;,&quot;path&quot;:&quot;page&#x2F;4&#x2F;index.html&quot;,&quot;title&quot;:&quot;&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
 <title>Hu说扒道</title><script src="/js/config.js"></script>
@@ -190,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/1-KMC%E6%A8%A1%E6%8B%9F%E5%8F%8A%E5%85%B6%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/1-KMC%E6%A8%A1%E6%8B%9F%E5%8F%8A%E5%85%B6%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">1. KMC模拟及其软件介绍</a>
+          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">1. OVITO module介绍</a>
         </h2>
 
         <div class="post-meta-container">
@@ -214,15 +214,8 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-25 15:54:58" itemprop="dateCreated datePublished" datetime="2021-08-25T15:54:58+08:00">2021-08-25</time>
+      <time title="创建时间：2021-06-08 08:00:00" itemprop="dateCreated datePublished" datetime="2021-06-08T08:00:00+08:00">2021-06-08</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-26 15:54:58" itemprop="dateModified" datetime="2021-08-26T15:54:58+08:00">2021-08-26</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -233,7 +226,7 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">OVITO软件</span></a>
         </span>
     </span>
 
@@ -247,103 +240,23 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="kmc介绍">KMC介绍</h1>
-<p>动力学蒙特卡罗模拟（Kinetic Monte Carlo，KMC）构造随机过程来模拟系统随时间的演化，适合于由组态跃迁主导的体系长时间演化的问题（rare events）。如：晶体内部和表面的扩散、生长、化学反应等。</p>
-<p><img src="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/1-KMC%E6%A8%A1%E6%8B%9F%E5%8F%8A%E5%85%B6%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D/图1.png"></p>
-<p>组态变化间隔很长，属于稀有事件（rare events），连续两次组态变化之间相互独立，可看成是Markov过程。组态之间的跃迁与跃迁速率<span class="math inline">\(k_{ij}\)</span>有关，而跃迁速率与<span class="math inline">\(E_{ij}^b\)</span>有关。若<span class="math inline">\(k_{ij}\)</span>已知，就可以构造随机过程使体系能够按照正确的轨迹进行演化。组态变换过程可看成是泊松过程，从而可以计算系统的推进时间。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/1-KMC%E6%A8%A1%E6%8B%9F%E5%8F%8A%E5%85%B6%E8%BD%AF%E4%BB%B6%E4%BB%8B%E7%BB%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/naruto.jpg">
-      <meta itemprop="name" content="Cooper">
-      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hu说扒道">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">4. 深度学习</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-22 21:09:48" itemprop="dateCreated datePublished" datetime="2021-08-22T21:09:48+08:00">2021-08-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="历史发展">历史发展</h1>
-<p>上世纪90年代~本世纪前10年，由于SVM等机器学习算法的提出导致人工神经网络的发展陷入低潮期。多层神经网络的劣势在于：</p>
+          <blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.ovito.org/docs/current/python/introduction/running.html">OVITO module官方手册</a></p>
+</blockquote>
+<h3 id="主要功能">主要功能</h3>
 <ul>
-<li>数学不漂亮，优化算法只能获取局部极值，算法性能与初始值有关</li>
-<li>不可解释性。训练神经网络获得的参数与实际任务的关联性非常模糊</li>
-<li>模型可调整的参数（如网络层数，每层神经元，非线性函数，学习率，优化方法，终止条件...）个数很多，使得训练神经网络编程了一门“艺术”（SVM只需要少量参数）</li>
-<li>如果要训练相对复杂的网络，需要大量的训练样本（SVM只需要小规模数据集）</li></ul>
+<li>自动化数据可视化和分析</li>
+<li>将OVITO数据I/O、分析、渲染等自定义为工作流或python程序</li>
+<li>通过开发新的modifiers或viewport layers扩展OVITO的功能到图形界面</li>
+</ul>
+<p>提供的接口包括内部数据模型、数据流框架和渲染功能。常见使用场景是将图形界面的用户复杂操作自动化为程序。</p>
+<blockquote>
+<p>OVITO Pro版本可以根据用户的操作自动生成程序脚本。</p>
+<p>OVITO Pro下载自动包含ovito module，不需要license。而图形界面需要license</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BB%8B%E7%BB%8D/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -374,7 +287,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -387,7 +300,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">3. 人工神经网络</a>
+          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">3. OVITO module使用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -398,26 +311,111 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-13 08:00:00" itemprop="dateCreated datePublished" datetime="2021-08-13T08:00:00+08:00">2021-08-13</time>
+      <time title="创建时间：2021-06-08 08:00:00" itemprop="dateCreated datePublished" datetime="2021-06-08T08:00:00+08:00">2021-06-08</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-08-14 00:00:00" itemprop="dateModified" datetime="2021-08-14T00:00:00+08:00">2021-08-14</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">OVITO软件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="概览">概览</h2>
+<p><code>ovito module</code>可以实现绝大部分的功能，例如：</p>
+<ul>
+<li>导入导出数据到模拟文件</li>
+<li>使用modifiers创建数据处理流</li>
+<li>渲染三维图像或视频</li>
+<li>获取分析流计算的结果数据</li>
+<li>自定义数据modifiers函数</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E4%BD%BF%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">2. OVITO module安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-08 08:00:00" itemprop="dateCreated datePublished" datetime="2021-06-08T08:00:00+08:00">2021-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">OVITO软件</span></a>
         </span>
     </span>
 
@@ -432,16 +430,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB?p=15&amp;spm_id_from=pageDriver">机器学习（浙大）</a></p>
-<p>《机器学习（周志华）》</p>
+<p><a target="_blank" rel="noopener" href="https://www.ovito.org/docs/current/python/index.html#scripting-manual">OVITO Scripting 手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ovito.org/python-downloads/">OVITO for Python 下载</a></p>
 </blockquote>
-<h1 id="神经元的数学模型">神经元的数学模型</h1>
-<p>人工智能的仿生学派：人工智能模拟的是人类大脑对于世界的认知，因此研究大脑认知机理，总结大脑处理信息的方式是实现人工智能的先决条件。算法只有深入的模拟大脑的认知机制和信息处理方式才能最终实现人工智能。</p>
-<p>数理学派：在现在以及可预见的未来，我们无法完全了解人脑的认知机理，计算机与人脑具有截然不同的物理属性和体系结构，因此片面强调计算机对人脑的模仿既不可能也不必须。应该用数学和逻辑推理的方法，从现有的计算机结构中获得确定的知识，而不是一味地强调人脑的模仿。</p>
-<p>支持向量机是数理学派代表，人工神经网络是人工智能的仿生学派代表。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-3-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/#more" rel="contents">
+              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/OVITO%E8%BD%AF%E4%BB%B6/OVITO%20module%E5%AE%89%E8%A3%85/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -472,7 +466,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/%E5%AD%A6%E4%B9%A0mchammer%E7%9A%84C++%E6%BA%90%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -485,7 +479,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" class="post-title-link" itemprop="url">2. 支持向量机</a>
+          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/%E5%AD%A6%E4%B9%A0mchammer%E7%9A%84C++%E6%BA%90%E7%A0%81/" class="post-title-link" itemprop="url">2. mchammer的C++源码整理</a>
         </h2>
 
         <div class="post-meta-container">
@@ -495,9 +489,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-08-11 08:00:00 / 修改时间：08:00:01" itemprop="dateCreated datePublished" datetime="2021-08-11T08:00:00+08:00">2021-08-11</time>
+      <time title="创建时间：2021-05-25 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-25T08:00:00+08:00">2021-05-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -505,11 +498,92 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">mchammer软件</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="写在前面">写在前面</h3>
+<p><code>mchammer</code>库采用pybind11作为C++与python的接口。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/%E5%AD%A6%E4%B9%A0mchammer%E7%9A%84C++%E6%BA%90%E7%A0%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/Git%E5%8F%8A%E5%85%B6%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/naruto.jpg">
+      <meta itemprop="name" content="Cooper">
+      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hu说扒道">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/Git%E5%8F%8A%E5%85%B6%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Git及其常用命令</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-25 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-25T08:00:00+08:00">2021-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">编程相关</span></a>
         </span>
     </span>
 
@@ -524,104 +598,21 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB?p=15&amp;spm_id_from=pageDriver">机器学习（浙大）</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77750026">支持向量机 SVM（ 知乎）</a></p>
-<p>《机器学习（周志华）》</p>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/docs">官方文档</a>、<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">官方Book（中文）</a></p>
 </blockquote>
-<h1 id="线性可分定义">线性可分定义</h1>
-<p>1995年俄罗斯科学家Vladimir Naumovich Vapnik发明支持向量机，主要针对二分类问题。 <img src="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/image-1.jpg" width="600"></p>
+<h3 id="典型工作流程">典型工作流程</h3>
+<p>工作内容：测试修改不同的程序功能并发布。</p>
+<ol type="1">
+<li>指针位于主分支master</li>
+<li>为修改程序功能创建并切换至新分支：<code>git checkout -b dev</code></li>
+<li>修改程序并提交：<code>git add *</code>；<code>git commit -m "dev"</code></li>
+<li>切换至主分支：<code>git checkout master</code></li>
+<li>将程序功能1的分支合并到主分支：<code>git merge dev</code></li>
+<li>删除程序功能1分支：<code>git branch -d dev</code></li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-2-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-1-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/naruto.jpg">
-      <meta itemprop="name" content="Cooper">
-      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hu说扒道">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-1-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">1. 机器学习介绍</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-11 08:00:00" itemprop="dateCreated datePublished" datetime="2021-08-11T08:00:00+08:00">2021-08-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/" itemprop="url" rel="index"><span itemprop="name">《机器学习》（浙大公开课）</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB?p=15&amp;spm_id_from=pageDriver">机器学习（浙大）</a></p>
-<h1 id="机器学习的定义">机器学习的定义</h1>
-<p>1959年Arthur Samuel对机器学习的定义：机器学习是这样的领域，它赋予计算机学习的能力，这种学习能力不是通过显著式编程获得的。</p>
-<p>1998年Tom Mitshell对机器学习的定义：一个计算机程序被称为可以学习，是指它能够针对某个任务T和某个性能指标P，从经验E中学习。这种学习的特点是，它在T上的被P所衡量的性能，会随着经验E的增加而提高。</p>
-<h1 id="机器学习的分类">机器学习的分类</h1>
-<p>按照任务是否需要和环境交换获得经验，机器学习分为监督学习（supervised learning）和强化学习（reinforcement learning）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%EF%BC%88%E6%B5%99%E5%A4%A7%E5%85%AC%E5%BC%80%E8%AF%BE%EF%BC%89/%E3%80%8A%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B-1-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/Git%E5%8F%8A%E5%85%B6%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -645,7 +636,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 <script src="/js/comments.js"></script>
 </div>

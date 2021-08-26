@@ -22,7 +22,7 @@
 <meta name="description" content="分享一些个人的学习笔记、资料和想法。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hu说扒道">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/page/5/index.html">
 <meta property="og:site_name" content="Hu说扒道">
 <meta property="og:description" content="分享一些个人的学习笔记、资料和想法。">
 <meta property="og:locale">
@@ -30,11 +30,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/page/5/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:true,&quot;isPost&quot;:false,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;&quot;,&quot;path&quot;:&quot;index.html&quot;,&quot;title&quot;:&quot;&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:true,&quot;isPost&quot;:false,&quot;lang&quot;:&quot;zh-Hans&quot;,&quot;comments&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;&quot;,&quot;path&quot;:&quot;page&#x2F;5&#x2F;index.html&quot;,&quot;title&quot;:&quot;&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
 <title>Hu说扒道</title><script src="/js/config.js"></script>
@@ -190,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">6. KMCLib模拟过程介绍</a>
+          <a href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Linux系统信息查询与进程管理</a>
         </h2>
 
         <div class="post-meta-container">
@@ -214,7 +214,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-25 16:07:12" itemprop="dateCreated datePublished" datetime="2021-08-25T16:07:12+08:00">2021-08-25</time>
+      <time title="创建时间：2021-05-25 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-25T08:00:00+08:00">2021-05-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -222,11 +222,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">编程相关</span></a>
         </span>
     </span>
 
@@ -240,13 +236,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="kmclib模拟过程">KMCLib模拟过程</h1>
-<p>下面以<code>latticeModel.cpp</code>程序说明KMCLib软件模拟的一般过程。<code>latticemodel.cpp</code>程序定义<code>LatticeModel</code>类，用于创建和执行KMC模型，包含三个方法。</p>
-<h2 id="latticemodelcalculateinitialmatching"><code>LatticeModel::calculateInitialMatching()</code></h2>
-<p>在模拟正式开始前执行，主要用于对每个格点匹配所有定义的过程。</p>
+          <h2 id="写在前面">写在前面</h2>
+<ul>
+<li>动态查看进程核系统资源信息：<code>top</code></li>
+<li>查看系统内存使用量：<code>free</code></li>
+<li>远程提交程序执行：<code>nohup 程序 &gt; log &amp;</code></li>
+<li>绑定进程至指定CPU：<code>taskset -cp cpuid PID</code></li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/6-KMCLib%E6%A8%A1%E6%8B%9F%E8%BF%87%E7%A8%8B%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2%E4%B8%8E%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -277,7 +276,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/5-KMCLib%E5%AE%89%E8%A3%85%E4%B8%8E%E8%B0%83%E8%AF%95/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/memory_profiler%E5%86%85%E5%AD%98%E6%A3%80%E6%B5%8Bpython%E5%BA%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -290,7 +289,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/5-KMCLib%E5%AE%89%E8%A3%85%E4%B8%8E%E8%B0%83%E8%AF%95/" class="post-title-link" itemprop="url">5. KMCLib安装与调试</a>
+          <a href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/memory_profiler%E5%86%85%E5%AD%98%E6%A3%80%E6%B5%8Bpython%E5%BA%93/" class="post-title-link" itemprop="url">memory_profiler内存监测Python库</a>
         </h2>
 
         <div class="post-meta-container">
@@ -301,7 +300,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-25 16:05:53" itemprop="dateCreated datePublished" datetime="2021-08-25T16:05:53+08:00">2021-08-25</time>
+      <time title="创建时间：2021-05-25 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-25T08:00:00+08:00">2021-05-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -309,11 +308,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">编程相关</span></a>
         </span>
     </span>
 
@@ -327,11 +322,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="kmclib软件安装">KMCLib软件安装</h1>
-<p>KMCLib软件源码基于Python2，因此必须有Python2环境。</p>
+          <p>python库，用于监测内存使用情况。</p>
+<h3 id="对python程序逐行监测">对python程序逐行监测</h3>
+<p>导入<code>profile</code>，在待监测的函数前加<code>@profile</code>。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/5-KMCLib%E5%AE%89%E8%A3%85%E4%B8%8E%E8%B0%83%E8%AF%95/#more" rel="contents">
+              <a class="btn" href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/memory_profiler%E5%86%85%E5%AD%98%E6%A3%80%E6%B5%8Bpython%E5%BA%93/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -362,7 +358,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/4-KMCLib%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/mchammer%E6%89%A7%E8%A1%8C%E6%AD%A3%E5%88%99%E7%B3%BB%E7%BB%BC%E6%A8%A1%E6%8B%9F%E7%9A%84%E7%BB%86%E8%8A%82%E6%95%B4%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -375,7 +371,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/4-KMCLib%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">4. KMCLib其他模块介绍</a>
+          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/mchammer%E6%89%A7%E8%A1%8C%E6%AD%A3%E5%88%99%E7%B3%BB%E7%BB%BC%E6%A8%A1%E6%8B%9F%E7%9A%84%E7%BB%86%E8%8A%82%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">1. mchammer执行正则系综模拟的细节整理</a>
         </h2>
 
         <div class="post-meta-container">
@@ -386,7 +382,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-25 16:04:51" itemprop="dateCreated datePublished" datetime="2021-08-25T16:04:51+08:00">2021-08-25</time>
+      <time title="创建时间：2021-05-22 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-22T08:00:00+08:00">2021-05-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -398,7 +394,7 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
+          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">mchammer软件</span></a>
         </span>
     </span>
 
@@ -412,12 +408,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>本文介绍KMCLib的Python接口的其他类，插件模块<code>KMCLib.PluginInterfaces</code>：<code>KMCRateCalculatorPlugin</code>类、<code>KMCAnalysis</code>类、<code>KMCBreakerPlugin</code>类；工具模块<code>Utilities</code>：</p>
-<h1 id="kmclib.plugininterfaces模块"><code>KMCLib.PluginInterfaces</code>模块</h1>
-<p>该模块提供用户自定义的接口，包括自定义过程速率、实时分析方法、模拟退出判据。</p>
+          <h3 id="写在前面">写在前面</h3>
+<p><code>mchammer</code>是一款执行Lattice Cluster Expansion Monte Carlo模拟的python库，底层由C++编写。CE部分调用<a target="_blank" rel="noopener" href="https://icet.materialsmodeling.org/index.html">icet</a>库，原子结构调用<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/index.html#">ASE</a>库。以下主要整理关于正则系综MC模拟的一些细节。</p>
+<p><a target="_blank" rel="noopener" href="https://icet.materialsmodeling.org/moduleref_mchammer/index.html">官方手册</a></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/4-KMCLib%E5%85%B6%E4%BB%96%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/mchammer%E8%BD%AF%E4%BB%B6/mchammer%E6%89%A7%E8%A1%8C%E6%AD%A3%E5%88%99%E7%B3%BB%E7%BB%BC%E6%A8%A1%E6%8B%9F%E7%9A%84%E7%BB%86%E8%8A%82%E6%95%B4%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -448,7 +444,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/3-KMCLib-Analysis%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E3%80%8AVIM%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E3%80%8B%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/naruto.jpg">
@@ -461,7 +457,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/3-KMCLib-Analysis%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">3. KMCLib.Analysis模块介绍</a>
+          <a href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E3%80%8AVIM%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E3%80%8B%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《VIM使用技巧》笔记</a>
         </h2>
 
         <div class="post-meta-container">
@@ -472,19 +468,22 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-08-25 16:03:36" itemprop="dateCreated datePublished" datetime="2021-08-25T16:03:36+08:00">2021-08-25</time>
+      <time title="创建时间：2021-05-09 08:00:00" itemprop="dateCreated datePublished" datetime="2021-05-09T08:00:00+08:00">2021-05-09</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-01 08:00:00" itemprop="dateModified" datetime="2021-06-01T08:00:00+08:00">2021-06-01</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
+          <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">编程相关</span></a>
         </span>
     </span>
 
@@ -498,96 +497,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="kmclib.analysis模块介绍"><code>KMCLib.Analysis</code>模块介绍</h1>
-<p>用于KMC模拟中实时分析模拟数据，在<code>KMCLatticeModel</code>中定义，可以同时定义多个analysis。</p>
+          <h3 id="第一章-vim解决问题的方式">第一章 Vim解决问题的方式</h3>
+<p><code>s</code>: 先删除光标下的字符，然后进入插入模式 <code>f&#123;char&#125;</code>: 让vim查找下一处char字符的位置 ; 下一个 , 上一个 <code>F&#123;char&#125;</code>: 让vim查找上一处char字符的位置 <code>cw</code>: 删除从光标位置到单词结尾的字符，并进入插入模式 <code>J</code>: 将当前行与下一行链接在一起</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/3-KMCLib-Analysis%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/2-KMCLib-CoreComponent%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/naruto.jpg">
-      <meta itemprop="name" content="Cooper">
-      <meta itemprop="description" content="分享一些个人的学习笔记、资料和想法。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hu说扒道">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/2-KMCLib-CoreComponent%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">2. KMCLib.CoreComponent模块介绍</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-25 16:01:07" itemprop="dateCreated datePublished" datetime="2021-08-25T16:01:07+08:00">2021-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">科研相关</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/" itemprop="url" rel="index"><span itemprop="name">Kinetic Monte Carlo</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="kmclib.corecomponent模块介绍"><code>KMCLib.CoreComponent</code>模块介绍</h1>
-<p>本文介绍KMCLib软件Python接口中<code>KMCLib.CoreComponent</code>模块的各个类，这些类组成KMCLib的核心用法。其中<a href="#KMCUnitCell类"><code>KMCLattice</code></a>和<a href="#KMCConfiguration类"><code>KMCConfiguration</code></a>用于结构创建等操作、<a href="#KMCInteractions类"><code>KMCInteractions</code></a>和<a href="#KMCProcess类"><code>KMCProcess</code></a>用于过程创建等操作、<a href="#KMCLatticeModel类"><code>KMCLatticeModel</code></a>用于定义和执行模拟等操作。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/%E7%A7%91%E7%A0%94%E7%9B%B8%E5%85%B3/Kinetic-Monte-Carlo/2-KMCLib-CoreComponent%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/%E7%BC%96%E7%A8%8B%E7%9B%B8%E5%85%B3/%E3%80%8AVIM%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E3%80%8B%E7%AC%94%E8%AE%B0/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -611,7 +525,7 @@
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
   </nav>
 <script src="/js/comments.js"></script>
 </div>
